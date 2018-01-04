@@ -1,7 +1,7 @@
 # waifu2x-converter_multilang_gui
 ![waifu2x-converter_gui](https://user-images.githubusercontent.com/16046279/34551724-b7ad54d4-f15f-11e7-91f5-5b2d425b97eb.png)
 
-Multilingual GUI for waifu2x-converter. Localization can be done via user-editable xaml file
+Multilingual GUI for waifu2x-converter(https://github.com/tanakamura/waifu2x-converter-cpp). Localization can be done via user-editable xaml file
 
 ## Localization
 1. The localization files have the name UILang._language-code_.xaml; where _language-code_ is a 5-character identifier like en-US, zh-TW, ja-JP.
@@ -20,9 +20,3 @@ Multilingual GUI for waifu2x-converter. Localization can be done via user-editab
 ## License and Sharing
 * Do what the fuck you want with this soft
 * No warranty attached
-
-
-
-
-
-Githubの操作に慣れようと思ってリポジトリ作ったけど無料版だと非公開に出来ないのね……
