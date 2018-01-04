@@ -21,4 +21,8 @@ Multilingual GUI for waifu2x-converter. Localization can be done via user-editab
 * Do what the fuck you want with this soft
 * No warranty attached
 
+
+
+
+
 Githubの操作に慣れようと思ってリポジトリ作ったけど無料版だと非公開に出来ないのね……
