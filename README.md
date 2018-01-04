@@ -1,8 +1,7 @@
-# Obsoleted!
-The official waifu2x-caffe now has a multilingual GUI by default!
+# waifu2x-converter_multilang_gui
+![waifu2x-converter_gui](https://user-images.githubusercontent.com/16046279/34551724-b7ad54d4-f15f-11e7-91f5-5b2d425b97eb.png)
 
-# waifu2x_caffe_multilang_gui
-Multilingual GUI for waifu2x-caffe. Localization can be done via user-editable xaml file
+Multilingual GUI for waifu2x-converter. Localization can be done via user-editable xaml file
 
 ## Localization
 1. The localization files have the name UILang._language-code_.xaml; where _language-code_ is a 5-character identifier like en-US, zh-TW, ja-JP.
@@ -18,14 +17,8 @@ Multilingual GUI for waifu2x-caffe. Localization can be done via user-editable x
   * XY can be found [Here](https://www.iso.org/obp/ui/#search)
   * Essentially _ab_ is the language, _XY_ is the country
   
-## Points-to-note
-* You need a working copy of [waifu2x-caffe](https://github.com/lltcggie/waifu2x-caffe/releases)
-* Unzip all files directly to the base folder of waifu2x-caffe, do not put it in into subdirectory.
-* Do not rename the default subdirectory (i.e. there should be a "models" folder)
-* Do not delete or move _waifu2x-caffe-cui.exe_
-
 ## License and Sharing
 * Do what the fuck you want with this soft
 * No warranty attached
-* Share your localization on the ISSUE page first, or post it into the waifu2x thread on videohelp.com forum
-* Feature request: I do not accept any feature request unless getting paid
+
+Githubの操作に慣れようと思ってリポジトリ作ったけど無料版だと非公開に出来ないのね……
