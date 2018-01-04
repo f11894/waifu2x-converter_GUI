@@ -22,4 +22,5 @@ Multilingual GUI for waifu2x-converter(https://github.com/tanakamura/waifu2x-con
 * No warranty attached
 
 Old version here
+
 https://www.dropbox.com/sh/0y9scaml78otum2/AAAs4sTIHQWn_UfYCwwC95VKa?dl=0
