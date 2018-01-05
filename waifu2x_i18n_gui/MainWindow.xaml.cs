@@ -134,6 +134,10 @@ namespace waifu2x_i18n_gui
 
             txtOutExt.Text = Properties.Settings.Default.outformat.ToString();
 
+            txtOutQuality.Clear();
+
+            if (Properties.Settings.Default.OutQuality != 0)
+            { txtOutQuality.Text = Properties.Settings.Default.OutQuality.ToString(); }
 
             { checkDandD.IsChecked = false; }
 
