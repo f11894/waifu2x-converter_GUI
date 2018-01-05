@@ -690,6 +690,10 @@ namespace waifu2x_i18n_gui
                 return;
             }
 
+            //  出力形式を決定する
+            param_outformat.Clear();
+            param_outformat.Append(txtOutExt.Text);
+            
             // D&D処理時に出力先フォルダが見つからなければ出力先をクリアする
             if (DandD_Mode == true)
             {
