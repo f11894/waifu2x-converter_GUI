@@ -173,7 +173,7 @@ namespace waifu2x_i18n_gui
         public static StringBuilder param_mode = new StringBuilder("noise_scale");
         public static StringBuilder param_device = new StringBuilder("");
         public static StringBuilder param_outquality = new StringBuilder("");
-        public static StringBuilder param_outformat = new StringBuilder("");
+        public static StringBuilder param_outformat = new StringBuilder(".png");
 
         public static StringBuilder random32 = new StringBuilder("");
         public static StringBuilder Not_Aspect_ratio_keep_argument = new StringBuilder("");
@@ -208,7 +208,7 @@ namespace waifu2x_i18n_gui
             }
             else
             {
-                Properties.Settings.Default.outformat = "*.png";
+                Properties.Settings.Default.outformat = ".png";
             }
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
