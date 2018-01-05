@@ -57,9 +57,9 @@
                         <TextBox Name="txtExt" MinWidth="300" HorizontalAlignment="Stretch">*.jpg *.jpeg *.png *.bmp *.tif *.tiff</TextBox>
                         <Button Name="btnExtReset" HorizontalAlignment="Right" Content="{DynamicResource ResourceKey=Main_IO_btnReset}" Click="OnFormatReset"></Button>
                         <Label Target="{Binding ElementName=txtOutExt}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_IO_OutFiletype}"></Label>
-                        <TextBox Name="txtOutExt" MinWidth="35" HorizontalAlignment="Stretch">.png</TextBox>
+                        <TextBox Name="txtOutExt" MinWidth="50" HorizontalAlignment="Stretch">.png</TextBox>
                         <Label Target="{Binding ElementName=txtOutQuality}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_IO_OutFilequality}"></Label>
-                        <TextBox Name="txtOutQuality" MinWidth="35" HorizontalAlignment="Stretch" Text=""></TextBox>
+                        <TextBox Name="txtOutQuality" MinWidth="50" HorizontalAlignment="Stretch" Text=""></TextBox>
                     </StackPanel>
                     <Label Target="{Binding ElementName=slider_zoom}" Content="{DynamicResource ResourceKey=Main_Mode_Mag}"></Label>
                     <StackPanel Orientation="Horizontal" Margin="3" HorizontalAlignment="Stretch">
