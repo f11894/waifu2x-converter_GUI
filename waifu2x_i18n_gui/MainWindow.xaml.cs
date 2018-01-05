@@ -130,10 +130,6 @@ namespace waifu2x_i18n_gui
                 slider_value.IsEnabled = false;
             }
 
-            txtOutExt.Clear();
-
-            txtOutExt.Text = Properties.Settings.Default.outformat.ToString();
-
             txtOutQuality.Clear();
 
             if (Properties.Settings.Default.OutQuality != 0)
@@ -158,6 +154,8 @@ namespace waifu2x_i18n_gui
             slider_zoom.Value = double.Parse(Properties.Settings.Default.scale_ratio);
 
             //cbTTA.IsChecked = false;
+
+            txtOutExt.SelectedValue = Properties.Settings.Default.outformat;
 
         }
         public static StringBuilder waifu2xbinary = new StringBuilder("");
@@ -206,14 +204,7 @@ namespace waifu2x_i18n_gui
                Properties.Settings.Default.informat = "*.jpg *.jpeg *.png *.bmp *.tif *.tiff";
             }
 
-            if (txtOutExt.Text.Trim() != "")
-            {
-                Properties.Settings.Default.outformat = txtOutExt.Text;
-            }
-            else
-            {
-                Properties.Settings.Default.outformat = ".png";
-            }
+            Properties.Settings.Default.outformat = txtOutExt.SelectedValue.ToString();
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 txtOutQuality.Text,
@@ -756,18 +747,6 @@ namespace waifu2x_i18n_gui
                 txtOutQuality.Clear();
             }
 
-            // 出力拡張子が指定されてなかったらpngにする
-            if (txtOutExt.Text.Trim() == "")
-            {
-                param_outformat.Clear();
-                param_outformat.Append(".png");
-            }
-            else
-            {
-                param_outformat.Clear();
-                param_outformat.Append(txtOutExt.Text);
-            }
-
             // 縦横比を保たない引数を追加する
             Not_Aspect_ratio_keep_argument.Clear();
             if (checkAspect_ratio_keep.IsChecked == false)
@@ -1137,7 +1116,7 @@ namespace waifu2x_i18n_gui
                  "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if \"%output_height%\"==\"\" if /I \"" + param_outformat.ToString() + "\"==\".png\" (\r\n" +
-                 "   move / Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   move /Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") else (\r\n" +
                  "   convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ")\r\n" +
@@ -1315,7 +1294,7 @@ namespace waifu2x_i18n_gui
                  "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if \"%output_height%\"==\"\" if /I \"" + param_outformat.ToString() + "\"==\".png\" (\r\n" +
-                 "   move / Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   move /Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") else (\r\n" +
                  "   convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") \r\n" +
@@ -1504,7 +1483,7 @@ namespace waifu2x_i18n_gui
                  "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if \"%output_height%\"==\"\" if /I \"" + param_outformat.ToString() + "\"==\".png\" (\r\n" +
-                 "   move / Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   move /Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") else (\r\n" +
                  "   convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") \r\n" +

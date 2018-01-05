@@ -57,7 +57,17 @@
                         <TextBox Name="txtExt" MinWidth="300" HorizontalAlignment="Stretch">*.jpg *.jpeg *.png *.bmp *.tif *.tiff</TextBox>
                         <Button Name="btnExtReset" HorizontalAlignment="Right" Content="{DynamicResource ResourceKey=Main_IO_btnReset}" Click="OnFormatReset"></Button>
                         <Label Target="{Binding ElementName=txtOutExt}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_IO_OutFiletype}"></Label>
-                        <TextBox Name="txtOutExt" MinWidth="50" HorizontalAlignment="Stretch">.png</TextBox>
+                        <ComboBox Name="txtOutExt" MinWidth="50" HorizontalAlignment="Stretch" SelectedValuePath="Tag">
+                            <ComboBoxItem Tag="0" Content=".png" IsSelected="True"/>
+                            <ComboBoxItem Tag="1" Content=".jpg"/>
+                            <ComboBoxItem Tag="2" Content=".jp2"/>
+                            <ComboBoxItem Tag="3" Content=".webp"/>
+                            <ComboBoxItem Tag="4" Content=".flif"/>
+                            <ComboBoxItem Tag="5" Content=".bmp"/>
+                            <ComboBoxItem Tag="6" Content=".tif"/>
+                            <ComboBoxItem Tag="7" Content=".tga"/>
+                            <ComboBoxItem Tag="8" Content=".ppm"/>
+                        </ComboBox>
                         <Label Target="{Binding ElementName=txtOutQuality}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_IO_OutFilequality}"></Label>
                         <TextBox Name="txtOutQuality" MinWidth="50" HorizontalAlignment="Stretch" Text=""></TextBox>
                     </StackPanel>
