@@ -13,6 +13,8 @@
     <sys:String x:Key="Main_IO_SrcPath">Source:</sys:String>
     <sys:String x:Key="Main_IO_DstPath">Destination:</sys:String>
     <sys:String x:Key="Main_IO_InFiletype">Input file types:</sys:String>
+    <sys:String x:Key="Main_IO_OutFiletype">Output extension:</sys:String>
+    <sys:String x:Key="Main_IO_OutFilequality">Output quality:</sys:String>
     <sys:String x:Key="Main_IO_btnSrc">Choose Src</sys:String>
     <sys:String x:Key="Main_IO_SrcClear">Clear</sys:String>
     <sys:String x:Key="Main_IO_btnDst">Choose Dst</sys:String>

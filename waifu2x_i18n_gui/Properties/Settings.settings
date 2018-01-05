@@ -38,5 +38,11 @@
     <Setting Name="SoundBeep" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="outformat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.png</Value>
+    </Setting>
+    <Setting Name="OutQuality" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

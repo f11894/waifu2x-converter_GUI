@@ -13,6 +13,8 @@
     <sys:String x:Key="Main_IO_SrcPath">入力先:</sys:String>
     <sys:String x:Key="Main_IO_DstPath">出力先:</sys:String>
     <sys:String x:Key="Main_IO_InFiletype">フォルダ内の変換する拡張子:</sys:String>
+    <sys:String x:Key="Main_IO_OutFiletype">出力拡張子:</sys:String>
+    <sys:String x:Key="Main_IO_OutFilequality">出力画質設定:</sys:String>
     <sys:String x:Key="Main_IO_btnSrc">入力先選択</sys:String>
     <sys:String x:Key="Main_IO_SrcClear">クリア</sys:String>
     <sys:String x:Key="Main_IO_btnDst">出力先選択</sys:String>

@@ -166,5 +166,29 @@ namespace waifu2x_i18n_gui.Properties {
                 this["SoundBeep"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".png")]
+        public string outformat {
+            get {
+                return ((string)(this["outformat"]));
+            }
+            set {
+                this["outformat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double OutQuality {
+            get {
+                return ((double)(this["OutQuality"]));
+            }
+            set {
+                this["OutQuality"] = value;
+            }
+        }
     }
 }
