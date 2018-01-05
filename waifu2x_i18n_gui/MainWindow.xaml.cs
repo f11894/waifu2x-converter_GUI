@@ -752,6 +752,7 @@ namespace waifu2x_i18n_gui
             }
             else
             {
+                param_outquality.Clear();
                 txtOutQuality.Clear();
             }
 
