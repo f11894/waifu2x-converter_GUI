@@ -346,7 +346,7 @@ namespace waifu2x_i18n_gui
             string msg =
                 "Multilingual GUI for waifu2x-converter\n" +
                 "nanashi (2018)\n" +
-                "Version 1.5.5\n" +
+                "Version 1.5.6\n" +
                 "BuildDate: 5 Jan,2018\n" +
                 "License: Do What the Fuck You Want License";
             MessageBox.Show(msg);
@@ -463,28 +463,47 @@ namespace waifu2x_i18n_gui
         private void OnSetModeChecked(object sender, RoutedEventArgs e)
         {
             gpDenoise.IsEnabled = true;
+            if (btnModeNoise.IsChecked == false) 
+            {
+               output_width.IsEnabled = true;
+               output_height.IsEnabled = true;
+               if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "") 
+               {
+                  slider_zoom.IsEnabled = true;
+                  slider_value.IsEnabled = true;
+               }
+            }
+
             param_mode.Clear();
             RadioButton optsrc = sender as RadioButton;
             param_mode.Append(optsrc.Tag.ToString());
             if (btnModeScale.IsChecked == true)
             { gpDenoise.IsEnabled = false;}
+            
+            if (btnModeNoise.IsChecked == true)
+            { 
+              output_width.IsEnabled = false;
+              output_height.IsEnabled = false;
+              slider_zoom.IsEnabled = false;
+              slider_value.IsEnabled = false;
+            }
         }
 
         private void OutputSize_TextChanged(object sender, EventArgs e)
         {
 
-            if (this.output_width.Text.Trim() != "")
+            if (btnModeNoise.IsChecked == false) if (this.output_width.Text.Trim() != "")
                 {
                 slider_zoom.IsEnabled = false;
                 slider_value.IsEnabled = false;
             }
 
-            if (this.output_height.Text.Trim() != "")
+            if (btnModeNoise.IsChecked == false) if (this.output_height.Text.Trim() != "")
             {
                 slider_zoom.IsEnabled = false;
                 slider_value.IsEnabled = false;
             }
-            if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "")
+            if (btnModeNoise.IsChecked == false) if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "")
                 {
                     slider_zoom.IsEnabled = true;
                     slider_value.IsEnabled = true;
