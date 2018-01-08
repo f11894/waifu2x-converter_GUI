@@ -619,6 +619,18 @@ namespace waifu2x_i18n_gui
                 this.CLIOutput.Clear();
             }
         }
+        
+        public static void Errormessage(string x)
+        { 
+          if (DandD_Mode == true)
+          {
+             System.IO.File.Delete(@waifu2x_bat.ToString());
+             DandD_Mode = false;
+          }
+          System.Media.SystemSounds.Beep.Play();
+          MessageBox.Show(@x);
+          return; 
+        }
 
         private void OnRun(object sender, RoutedEventArgs e)
         {
@@ -640,7 +652,7 @@ namespace waifu2x_i18n_gui
             }
             if (waifu2xbinary.ToString() == "")
             {
-                MessageBox.Show(@"waifu2x-converter is missing!");
+                Errormessage(@"waifu2x-converter is missing!");
                 return;
             }
                 /*if (!File.Exists("waifu2x-converter_x64.exe"))
@@ -649,11 +661,11 @@ namespace waifu2x_i18n_gui
                     return;
                 }*/
 
-                if (param_color.ToString() == "--model_dir models_rgb")
+            if (param_color.ToString() == "--model_dir models_rgb")
             {
                 if (!Directory.Exists("models_rgb"))
                 {
-                    MessageBox.Show("Training models_rgb model folder is missing!");
+                    Errormessage("Training models_rgb model folder is missing!");
                     return;
                 }
             }
@@ -661,7 +673,7 @@ namespace waifu2x_i18n_gui
             {
                 if (!Directory.Exists("models"))
                 {
-                    MessageBox.Show("Training models model folder is missing!");
+                    Errormessage("Training models model folder is missing!");
                     return;
                 }
             }
@@ -669,7 +681,7 @@ namespace waifu2x_i18n_gui
             {
                 if (!Directory.Exists("photo"))
                 {
-                    MessageBox.Show("Training photo model folder is missing!");
+                    Errormessage("Training photo model folder is missing!");
                     return;
                 }
             }
@@ -705,7 +717,7 @@ namespace waifu2x_i18n_gui
             }
             else
             {
-                MessageBox.Show(@"The source folder or file does not exists!");
+                Errormessage(@"The source folder or file does not exists!");
                 return;
             }
 
@@ -768,6 +780,17 @@ namespace waifu2x_i18n_gui
             {
                 param_outquality.Clear();
                 txtOutQuality.Clear();
+            }
+            
+            // 入力拡張子の指定書式が正しいかチェックする
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+                txtExt.Text,
+                @"^*\.\w{2,4}( \.\w{2,4})*$",
+                System.Text.RegularExpressions.RegexOptions.ECMAScript))
+            {
+                // 機械翻訳で出した文なので通じるのか不安
+                Errormessage("Input filename extension specification format is incorrect!");
+                return;
             }
 
             // 縦横比を保たない引数を追加する
