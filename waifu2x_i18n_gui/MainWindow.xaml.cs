@@ -55,7 +55,14 @@ namespace waifu2x_i18n_gui
             }
             // 設定をファイルから読み込む
             txtExt.Text = Properties.Settings.Default.informat;
-            txtTempPath.Text = Properties.Settings.Default.temporary_dir;
+            if (Properties.Settings.Default.temporary_dir == "%TEMP%")
+            {
+               txtTempPath.Text = System.IO.Path.GetTempPath();
+            }
+            else
+            {
+               txtTempPath.Text = Properties.Settings.Default.temporary_dir;
+            }
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 Properties.Settings.Default.Device_ID,
@@ -232,7 +239,7 @@ namespace waifu2x_i18n_gui
             }
             else
             {
-                Properties.Settings.Default.temporary_dir = "%TEMP%";
+                Properties.Settings.Default.temporary_dir = System.IO.Path.GetTempPath();
             }
 
             // Properties.Settings.Default.Device_ID = txtDevice.Text;
@@ -726,6 +733,14 @@ namespace waifu2x_i18n_gui
             }
             // 一時フォルダを設定する
             param_tempdir.Clear();
+            if (this.txtTempPath.Text.Trim() == "") txtTempPath.Text = System.IO.Path.GetTempPath();
+            
+            // 一時フォルダのパスの末尾に\が無かったら付ける
+            txtTempPath.Text = System.Text.RegularExpressions.Regex.Replace(
+              txtTempPath.Text, @"^(.+?)\\*$", @"$1\",
+              System.Text.RegularExpressions.RegexOptions.Singleline
+            );
+            
             if (Directory.Exists(this.txtTempPath.Text))
             {
                 param_tempdir.Append(txtTempPath.Text);
@@ -733,8 +748,8 @@ namespace waifu2x_i18n_gui
             else
             {
                 txtTempPath.Clear();
-                txtTempPath.AppendText("%TEMP%");
-                param_tempdir.Append("%TEMP%");
+                txtTempPath.AppendText(System.IO.Path.GetTempPath());
+                param_tempdir.Append(System.IO.Path.GetTempPath());
             }
 
             //  出力形式を決定する
@@ -1129,7 +1144,7 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
-                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\\\"\r\n" +
+                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" + 
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
@@ -1309,7 +1324,7 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
-                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\\\"\r\n" +
+                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
@@ -1500,7 +1515,7 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
-                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\\\"\r\n" +
+                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
