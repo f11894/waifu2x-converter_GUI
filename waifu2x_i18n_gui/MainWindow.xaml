@@ -126,16 +126,19 @@
                                 <TextBox Name="txtDevice" HorizontalAlignment="Right" MinWidth="50" Margin="1" Text="" ToolTip="{DynamicResource ResourceKey=Main_Device_Compute_Tooltip}" ></TextBox>
                             </StackPanel>
                         </GroupBox>
-                        <GroupBox Name="gpDandD" Padding="3" Margin="3" Height="100">
-                            <StackPanel Orientation="Vertical" Margin="3">
-                                <CheckBox Name="checkDandD" Margin="3" Content="{DynamicResource ResourceKey=Main_checkDandD}" ></CheckBox>
-                                <CheckBox Name="checkAspect_ratio_keep" Margin="3" Content="{DynamicResource ResourceKey=Main_checkAspect_ratio_keep}" ></CheckBox>
-                                <CheckBox Name="checkAlphachannel_ImageMagick" Margin="3" Content="{DynamicResource ResourceKey=Main_checkAlphachannel_ImageMagick}" ></CheckBox>
-                                <CheckBox Name="checkSoundBeep" Margin="3" Content="{DynamicResource ResourceKey=Main_checkSoundBeep}" ></CheckBox>
-                            </StackPanel>
-                        </GroupBox>
-
                     </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="{DynamicResource ResourceKey=MainTab_Mode}">
+                <StackPanel Orientation="Vertical" Margin="3">
+                    <GroupBox Name="gpDandD" Padding="3" Margin="3" Height="100">
+                        <StackPanel Orientation="Vertical" Margin="3">
+                            <CheckBox Name="checkDandD" Margin="3" Content="{DynamicResource ResourceKey=Main_checkDandD}" ></CheckBox>
+                            <CheckBox Name="checkAspect_ratio_keep" Margin="3" Content="{DynamicResource ResourceKey=Main_checkAspect_ratio_keep}" ></CheckBox>
+                            <CheckBox Name="checkAlphachannel_ImageMagick" Margin="3" Content="{DynamicResource ResourceKey=Main_checkAlphachannel_ImageMagick}" ></CheckBox>
+                            <CheckBox Name="checkSoundBeep" Margin="3" Content="{DynamicResource ResourceKey=Main_checkSoundBeep}" ></CheckBox>
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </TabItem>
         </TabControl>
