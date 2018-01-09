@@ -190,5 +190,17 @@ namespace waifu2x_i18n_gui.Properties {
                 this["OutQuality"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Alphachannel_ImageMagick {
+            get {
+                return ((bool)(this["Alphachannel_ImageMagick"]));
+            }
+            set {
+                this["Alphachannel_ImageMagick"] = value;
+            }
+        }
     }
 }

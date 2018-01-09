@@ -130,6 +130,7 @@
                             <StackPanel Orientation="Vertical" Margin="3">
                                 <CheckBox Name="checkDandD" Margin="3" Content="{DynamicResource ResourceKey=Main_checkDandD}" ></CheckBox>
                                 <CheckBox Name="checkAspect_ratio_keep" Margin="3" Content="{DynamicResource ResourceKey=Main_checkAspect_ratio_keep}" ></CheckBox>
+                                <CheckBox Name="checkAlphachannel_ImageMagick" Margin="3" Content="{DynamicResource ResourceKey=Main_checkAlphachannel_ImageMagick}" ></CheckBox>
                                 <CheckBox Name="checkSoundBeep" Margin="3" Content="{DynamicResource ResourceKey=Main_checkSoundBeep}" ></CheckBox>
                             </StackPanel>
                         </GroupBox>

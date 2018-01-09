@@ -45,6 +45,7 @@
     <sys:String x:Key="Main_Device_Compute">Processor ID</sys:String>
     <sys:String x:Key="Main_Device_Compute_Tooltip">processor ID to use. Automatic if not specified.</sys:String>
     <sys:String x:Key="Main_checkDandD">Start conversion immediately after drag and drop</sys:String>
+    <sys:String x:Key="Main_checkAlphachannel_ImageMagick">Separate alpha channels with ImageMagick</sys:String>
     <sys:String x:Key="Main_checkAspect_ratio_keep">keep aspect ratio</sys:String>
     <sys:String x:Key="Main_checkSoundBeep">Play beep after processing</sys:String>
     <sys:String x:Key="Main_Device_Block">Block Size</sys:String>

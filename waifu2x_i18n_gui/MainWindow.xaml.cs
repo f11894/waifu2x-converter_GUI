@@ -150,6 +150,11 @@ namespace waifu2x_i18n_gui
             if (Properties.Settings.Default.SoundBeep == true)
             { checkSoundBeep.IsChecked = true; }
 
+            { checkAlphachannel_ImageMagick.IsChecked = true; }
+
+            if (Properties.Settings.Default.Alphachannel_ImageMagick == false)
+            { checkAlphachannel_ImageMagick.IsChecked = false; }
+            
             slider_value.Text = Properties.Settings.Default.scale_ratio;
             slider_zoom.Value = double.Parse(Properties.Settings.Default.scale_ratio);
 
@@ -180,6 +185,7 @@ namespace waifu2x_i18n_gui
         public static StringBuilder random32 = new StringBuilder("");
         public static StringBuilder Not_Aspect_ratio_keep_argument = new StringBuilder("");
         public static StringBuilder Aspect_ratio_keep_argument = new StringBuilder("");
+        public static StringBuilder flagAlphachannel_ImageMagick = new StringBuilder("");
 
         public static bool DandD_Mode = false;
         public static int FileCount = (0);
@@ -272,6 +278,11 @@ namespace waifu2x_i18n_gui
             { Properties.Settings.Default.SoundBeep = true; }
             if (checkSoundBeep.IsChecked == false)
             { Properties.Settings.Default.SoundBeep = false; }
+
+            if (checkAlphachannel_ImageMagick.IsChecked == true)
+            { Properties.Settings.Default.Alphachannel_ImageMagick = true; }
+            if (checkAlphachannel_ImageMagick.IsChecked == false)
+            { Properties.Settings.Default.Alphachannel_ImageMagick = false; }
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 slider_value.Text,
@@ -803,6 +814,10 @@ namespace waifu2x_i18n_gui
             if (this.output_width.Text.Trim() != "") if (this.output_height.Text.Trim() != "") if (checkAspect_ratio_keep.IsChecked == true)
             { Aspect_ratio_keep_argument.Append("1"); }
 
+            // アルファチャンネルをImageMagickで分離して処理するかどうか判断するフラグを追加
+            flagAlphachannel_ImageMagick.Clear();
+            flagAlphachannel_ImageMagick.Append(checkAlphachannel_ImageMagick.IsChecked.ToString());
+
             // Set Destination
             param_dst_dd.Clear();
             if (this.txtDstPath.Text.Trim() == "")
@@ -1109,12 +1124,13 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" + 
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_height=" + this.output_height.Text + "\"\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
-                 "if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
+                 "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" %Image_path%') do set \"image_width=%%a\"\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" %Image_path%') do set \"image_height=%%a\"\r\n" +
@@ -1287,12 +1303,13 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_height=" + this.output_height.Text + "\"\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
-                 "if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
+                 "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" %Image_path%') do set \"image_width=%%a\"\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" %Image_path%') do set \"image_height=%%a\"\r\n" +
@@ -1476,12 +1493,13 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_height=" + this.output_height.Text + "\"\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
-                 "if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
+                 "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" %Image_path%') do set \"image_width=%%a\"\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" %Image_path%') do set \"image_height=%%a\"\r\n" +
