@@ -248,23 +248,11 @@ namespace waifu2x_i18n_gui
                Properties.Settings.Default.Device_ID = "Unspecified";
             }
             
-            if (param_block.ToString().Trim() == "--block_size 512")
-            Properties.Settings.Default.block_size = "512";
-            if (param_block.ToString().Trim() == "--block_size 256")
-            Properties.Settings.Default.block_size = "256";
-            if (param_block.ToString().Trim() == "--block_size 128")
-            Properties.Settings.Default.block_size = "128";            
-            if (param_block.ToString().Trim() == "--block_size 64")
-            Properties.Settings.Default.block_size = "64";
+            string param_block_r = param_block.ToString().Replace("--block_size ", "");
+            Properties.Settings.Default.block_size = param_block_r;
             
-            if (param_denoise_temp.ToString().Trim() == "--noise_level 3")
-            { Properties.Settings.Default.noise_level = "3"; }
-            if (param_denoise_temp.ToString().Trim() == "--noise_level 2")
-            { Properties.Settings.Default.noise_level = "2"; }
-            if (param_denoise_temp.ToString().Trim() == "--noise_level 1")
-            { Properties.Settings.Default.noise_level = "1"; }
-            if (param_denoise_temp.ToString().Trim() == "--noise_level 0")
-            { Properties.Settings.Default.noise_level = "0"; }
+            string param_denoise_temp_r = param_denoise_temp.ToString().Replace("--noise_level ", "");
+            Properties.Settings.Default.noise_level = param_denoise_temp_r;
             
             if (param_color.ToString().Trim() == "--model_dir models_rgb")
             {Properties.Settings.Default.model_dir = "RGB";}
@@ -275,25 +263,10 @@ namespace waifu2x_i18n_gui
 
             Properties.Settings.Default.mode = param_mode.ToString();
 
-            if (checkDandD.IsChecked == true)
-            { Properties.Settings.Default.DandD_check = true; }
-            if (checkDandD.IsChecked == false)
-            { Properties.Settings.Default.DandD_check = false; }
-
-            if (checkAspect_ratio_keep.IsChecked == true)
-            { Properties.Settings.Default.Aspect_ratio_keep = true; }
-            if (checkAspect_ratio_keep.IsChecked == false)
-            { Properties.Settings.Default.Aspect_ratio_keep = false; }
-
-            if (checkSoundBeep.IsChecked == true)
-            { Properties.Settings.Default.SoundBeep = true; }
-            if (checkSoundBeep.IsChecked == false)
-            { Properties.Settings.Default.SoundBeep = false; }
-
-            if (checkAlphachannel_ImageMagick.IsChecked == true)
-            { Properties.Settings.Default.Alphachannel_ImageMagick = true; }
-            if (checkAlphachannel_ImageMagick.IsChecked == false)
-            { Properties.Settings.Default.Alphachannel_ImageMagick = false; }
+            Properties.Settings.Default.DandD_check = Convert.ToBoolean(checkDandD.IsChecked);
+            Properties.Settings.Default.Aspect_ratio_keep = Convert.ToBoolean(checkAspect_ratio_keep.IsChecked);
+            Properties.Settings.Default.SoundBeep = Convert.ToBoolean(checkSoundBeep.IsChecked);
+            Properties.Settings.Default.Alphachannel_ImageMagick = Convert.ToBoolean(checkAlphachannel_ImageMagick.IsChecked);
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 slider_value.Text,
