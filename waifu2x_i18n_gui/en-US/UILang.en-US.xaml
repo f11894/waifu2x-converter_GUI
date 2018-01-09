@@ -43,7 +43,9 @@
     <sys:String x:Key="Main_Mode_Color_Photo">Photography, Anime</sys:String>
     <!-- Tabs -->
     <sys:String x:Key="MainTab_Mode">Mode</sys:String>
-    <!-- Tab:IO -->
+    <!-- Tab:Mode -->
+    <sys:String x:Key="Main_Mode_TempPath">Temporary folder:</sys:String>
+    <sys:String x:Key="Main_Mode_Temp_Tooltip">Normally you do not need to change</sys:String>
     <sys:String x:Key="Main_Device_Compute">Processor ID</sys:String>
     <sys:String x:Key="Main_Device_Compute_Tooltip">processor ID to use. Automatic if not specified.</sys:String>
     <sys:String x:Key="Main_checkDandD">Start conversion immediately after drag and drop</sys:String>

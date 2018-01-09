@@ -131,8 +131,12 @@
             </TabItem>
             <TabItem Header="{DynamicResource ResourceKey=MainTab_Mode}">
                 <StackPanel Orientation="Vertical" Margin="3">
-                    <GroupBox Name="gpDandD" Padding="3" Margin="3" Height="100">
+                    <GroupBox Name="gpDandD" Padding="3" Margin="3">
                         <StackPanel Orientation="Vertical" Margin="3">
+                            <StackPanel Orientation="Horizontal">
+                               <Label Target="{Binding ElementName=txtTempPath}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_TempPath}"></Label>
+                               <TextBox Name="txtTempPath" MinWidth="600" HorizontalAlignment="Stretch" AllowDrop="True" PreviewDragOver="On_DragOver" PreviewDragEnter="On_DragOver" PreviewDrop="On_TempDrop" ToolTip="{DynamicResource ResourceKey=Main_Mode_Temp_Tooltip}"></TextBox>
+                            </StackPanel>
                             <CheckBox Name="checkDandD" Margin="3" Content="{DynamicResource ResourceKey=Main_checkDandD}" ></CheckBox>
                             <CheckBox Name="checkAspect_ratio_keep" Margin="3" Content="{DynamicResource ResourceKey=Main_checkAspect_ratio_keep}" ></CheckBox>
                             <CheckBox Name="checkAlphachannel_ImageMagick" Margin="3" Content="{DynamicResource ResourceKey=Main_checkAlphachannel_ImageMagick}" ></CheckBox>

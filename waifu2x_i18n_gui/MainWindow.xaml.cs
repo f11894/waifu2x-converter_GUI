@@ -55,6 +55,7 @@ namespace waifu2x_i18n_gui
             }
             // 設定をファイルから読み込む
             txtExt.Text = Properties.Settings.Default.informat;
+            txtTempPath.Text = Properties.Settings.Default.temporary_dir;
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 Properties.Settings.Default.Device_ID,
@@ -181,6 +182,7 @@ namespace waifu2x_i18n_gui
         public static StringBuilder param_device = new StringBuilder("");
         public static StringBuilder param_outquality = new StringBuilder("");
         public static StringBuilder param_outformat = new StringBuilder(".png");
+        public static StringBuilder param_tempdir = new StringBuilder("%TEMP%");
 
         public static StringBuilder random32 = new StringBuilder("");
         public static StringBuilder Not_Aspect_ratio_keep_argument = new StringBuilder("");
@@ -222,6 +224,15 @@ namespace waifu2x_i18n_gui
             else
             {
                 Properties.Settings.Default.OutQuality = 0;
+            }
+
+            if (Directory.Exists(this.txtTempPath.Text))
+            {
+                Properties.Settings.Default.temporary_dir = txtTempPath.Text;
+            }
+            else
+            {
+                Properties.Settings.Default.temporary_dir = "%TEMP%";
             }
 
             // Properties.Settings.Default.Device_ID = txtDevice.Text;
@@ -468,6 +479,15 @@ namespace waifu2x_i18n_gui
             {
                 string[] fn = (string[])e.Data.GetData(DataFormats.FileDrop);
                 this.txtDstPath.Text = fn[0];
+            }
+        }
+
+        private void On_TempDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] fn = (string[])e.Data.GetData(DataFormats.FileDrop);
+                this.txtTempPath.Text = fn[0];
             }
         }
 
@@ -730,6 +750,18 @@ namespace waifu2x_i18n_gui
             {
                 Errormessage(@"The source folder or file does not exists!");
                 return;
+            }
+            // 一時フォルダを設定する
+            param_tempdir.Clear();
+            if (Directory.Exists(this.txtTempPath.Text))
+            {
+                param_tempdir.Append(txtTempPath.Text);
+            }
+            else
+            {
+                txtTempPath.Clear();
+                txtTempPath.AppendText("%TEMP%");
+                param_tempdir.Append("%TEMP%");
             }
 
             //  出力形式を決定する
@@ -1124,6 +1156,7 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\\\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" + 
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
@@ -1146,44 +1179,44 @@ namespace waifu2x_i18n_gui
                  "if not \"" + param_mode.ToString() + "\"==\"auto_scale\" set \"Mode=" + param_mode.ToString() + " " + param_denoise.ToString() + "\"\r\n" +
                  "set \"Temporary_Name=" + random32.ToString() + "_%RANDOM%_%RANDOM%_%RANDOM%_\"\r\n" +
                  // アルファチャンネルが無い場合は普通に拡大
-                 "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
                  // 元のファイル名がユニコードでも処理出来るようにテンポフォルダに別名でコピーする
-                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%TEMP%\\%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%TEMP%\\%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
                  // アルファチャンネルが有ったらImageMagickで分離して拡大
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   convert.exe %Image_path% -channel RGBA -separate \"%TEMP%\\%Temporary_Name%.png\"\r\n" +
-                 "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%TEMP%\\%Temporary_Name%-3.png\"') do set \"image_alpha_color=%%a\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%-0.png\" \"%TEMP%\\%Temporary_Name%-1.png\" \"%TEMP%\\%Temporary_Name%-2.png\" -channel RGB -combine \"%TEMP%\\%Temporary_Name%_RGB.png\"\r\n" +
-                 "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%TEMP%\\%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   convert.exe %Image_path% -channel RGBA -separate \"%Temporary_dir%%Temporary_Name%.png\"\r\n" +
+                 "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%Temporary_dir%%Temporary_Name%-3.png\"') do set \"image_alpha_color=%%a\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%-0.png\" \"%Temporary_dir%%Temporary_Name%-1.png\" \"%Temporary_dir%%Temporary_Name%-2.png\" -channel RGB -combine \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%Temporary_dir%%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
                  ")\r\n" +
-                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_width=%%a\"\r\n" +
-                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_height=%%a\"\r\n" +
+                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_width=%%a\"\r\n" +
+                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_height=%%a\"\r\n" +
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%TEMP%\\%Temporary_Name%-3.png\" -sample %image_2x_width%x%image_2x_height%! \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%TEMP%\\%Temporary_Name%-3.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_RGB_2x.png\" -channel RGB -separate \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_RGB_2x-0.png\" \"%TEMP%\\%Temporary_Name%_RGB_2x-1.png\" \"%TEMP%\\%Temporary_Name%_RGB_2x-2.png\" \"%TEMP%\\%Temporary_Name%_alpha_2x.png\" -channel RGBA -combine \"%TEMP%\\%Temporary_Name%_BefConvExt.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-0.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-1.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-2.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-3.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-0.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-1.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-2.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%Temporary_dir%%Temporary_Name%-3.png\" -sample %image_2x_width%x%image_2x_height%! \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%-3.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" -channel RGB -separate \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x-0.png\" \"%Temporary_dir%%Temporary_Name%_RGB_2x-1.png\" \"%Temporary_dir%%Temporary_Name%_RGB_2x-2.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -channel RGBA -combine \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-0.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-1.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-2.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-3.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-0.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-1.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-2.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  ")\r\n" +
-                 "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
-                 "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
-                 "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if \"%output_height%\"==\"\" if /I \"" + param_outformat.ToString() + "\"==\".png\" (\r\n" +
-                 "   move /Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   move /Y \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") else (\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ")\r\n" +
-                 "if exist \"%TEMP%\\%Temporary_Name%%Image_ext%\" del \"%TEMP%\\%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
-                 "if exist \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" del \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
+                 "if exist \"%Temporary_dir%%Temporary_Name%%Image_ext%\" del \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
+                 "if exist \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" del \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
                  
                  
                  "endlocal\r\n" +
@@ -1303,6 +1336,7 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\\\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
@@ -1325,44 +1359,44 @@ namespace waifu2x_i18n_gui
                  "if not \"" + param_mode.ToString() + "\"==\"auto_scale\" set \"Mode=" + param_mode.ToString() + " " + param_denoise.ToString() + "\"\r\n" +
                  "set \"Temporary_Name=" + random32.ToString() + "_%RANDOM%_%RANDOM%_%RANDOM%_\"\r\n" +
                  // アルファチャンネルが無い場合は普通に拡大
-                 "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
                  // 元のファイル名がユニコードでも処理出来るようにテンポフォルダに別名でコピーする
-                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%TEMP%\\%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%TEMP%\\%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
                  // アルファチャンネルが有ったらImageMagickで分離して拡大
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   convert.exe %Image_path% -channel RGBA -separate \"%TEMP%\\%Temporary_Name%.png\"\r\n" +
-                 "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%TEMP%\\%Temporary_Name%-3.png\"') do set \"image_alpha_color=%%a\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%-0.png\" \"%TEMP%\\%Temporary_Name%-1.png\" \"%TEMP%\\%Temporary_Name%-2.png\" -channel RGB -combine \"%TEMP%\\%Temporary_Name%_RGB.png\"\r\n" +
-                 "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%TEMP%\\%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   convert.exe %Image_path% -channel RGBA -separate \"%Temporary_dir%%Temporary_Name%.png\"\r\n" +
+                 "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%Temporary_dir%%Temporary_Name%-3.png\"') do set \"image_alpha_color=%%a\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%-0.png\" \"%Temporary_dir%%Temporary_Name%-1.png\" \"%Temporary_dir%%Temporary_Name%-2.png\" -channel RGB -combine \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%Temporary_dir%%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
                  ") >nul\r\n" +
-                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_width=%%a\"\r\n" +
-                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_height=%%a\"\r\n" +
+                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_width=%%a\"\r\n" +
+                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_height=%%a\"\r\n" +
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%TEMP%\\%Temporary_Name%-3.png\" -sample %image_2x_width%x%image_2x_height%! \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%TEMP%\\%Temporary_Name%-3.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_RGB_2x.png\" -channel RGB -separate \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_RGB_2x-0.png\" \"%TEMP%\\%Temporary_Name%_RGB_2x-1.png\" \"%TEMP%\\%Temporary_Name%_RGB_2x-2.png\" \"%TEMP%\\%Temporary_Name%_alpha_2x.png\" -channel RGBA -combine \"%TEMP%\\%Temporary_Name%_BefConvExt.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-0.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-1.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-2.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-3.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-0.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-1.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-2.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%Temporary_dir%%Temporary_Name%-3.png\" -sample %image_2x_width%x%image_2x_height%! \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%-3.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" -channel RGB -separate \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x-0.png\" \"%Temporary_dir%%Temporary_Name%_RGB_2x-1.png\" \"%Temporary_dir%%Temporary_Name%_RGB_2x-2.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -channel RGBA -combine \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-0.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-1.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-2.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-3.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-0.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-1.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-2.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  ")  >nul\r\n" +
-                 "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
-                 "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
-                 "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if \"%output_height%\"==\"\" if /I \"" + param_outformat.ToString() + "\"==\".png\" (\r\n" +
-                 "   move /Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   move /Y \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") else (\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") \r\n" +
-                 "if exist \"%TEMP%\\%Temporary_Name%%Image_ext%\" del \"%TEMP%\\%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
-                 "if exist \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" del \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
+                 "if exist \"%Temporary_dir%%Temporary_Name%%Image_ext%\" del \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
+                 "if exist \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" del \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
 
 
 
@@ -1493,6 +1527,7 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Temporary_dir=" + param_tempdir.ToString() + "\\\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
@@ -1515,44 +1550,44 @@ namespace waifu2x_i18n_gui
                  "if not \"" + param_mode.ToString() + "\"==\"auto_scale\" set \"Mode=" + param_mode.ToString() + " " + param_denoise.ToString() + "\"\r\n" +
                  "set \"Temporary_Name=" + random32.ToString() + "_%RANDOM%_%RANDOM%_%RANDOM%_\"\r\n" +
                  // アルファチャンネルが無い場合は普通に拡大
-                 "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
                  // 元のファイル名がユニコードでも処理出来るようにテンポフォルダに別名でコピーする
-                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%TEMP%\\%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%TEMP%\\%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
                  // アルファチャンネルが有ったらImageMagickで分離して拡大
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   convert.exe %Image_path% -channel RGBA -separate \"%TEMP%\\%Temporary_Name%.png\"\r\n" +
-                 "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%TEMP%\\%Temporary_Name%-3.png\"') do set \"image_alpha_color=%%a\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%-0.png\" \"%TEMP%\\%Temporary_Name%-1.png\" \"%TEMP%\\%Temporary_Name%-2.png\" -channel RGB -combine \"%TEMP%\\%Temporary_Name%_RGB.png\"\r\n" +
-                 "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%TEMP%\\%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   convert.exe %Image_path% -channel RGBA -separate \"%Temporary_dir%%Temporary_Name%.png\"\r\n" +
+                 "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%Temporary_dir%%Temporary_Name%-3.png\"') do set \"image_alpha_color=%%a\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%-0.png\" \"%Temporary_dir%%Temporary_Name%-1.png\" \"%Temporary_dir%%Temporary_Name%-2.png\" -channel RGB -combine \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%Temporary_dir%%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
                  ") >nul\r\n" +
-                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_width=%%a\"\r\n" +
-                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_height=%%a\"\r\n" +
+                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%w\" \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_width=%%a\"\r\n" +
+                 "if \"%image_alpha_color%\"==\"1\" for /f \"delims=\" %%a in ('identify.exe -format \"%%h\" \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"') do set \"image_2x_height=%%a\"\r\n" +
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%TEMP%\\%Temporary_Name%-3.png\" -sample %image_2x_width%x%image_2x_height%! \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%TEMP%\\%Temporary_Name%-3.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_RGB_2x.png\" -channel RGB -separate \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_RGB_2x-0.png\" \"%TEMP%\\%Temporary_Name%_RGB_2x-1.png\" \"%TEMP%\\%Temporary_Name%_RGB_2x-2.png\" \"%TEMP%\\%Temporary_Name%_alpha_2x.png\" -channel RGBA -combine \"%TEMP%\\%Temporary_Name%_BefConvExt.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-0.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-1.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-2.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%-3.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-0.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-1.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_RGB_2x-2.png\"\r\n" +
-                 "   del \"%TEMP%\\%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%Temporary_dir%%Temporary_Name%-3.png\" -sample %image_2x_width%x%image_2x_height%! \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%-3.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" -channel RGB -separate \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x-0.png\" \"%Temporary_dir%%Temporary_Name%_RGB_2x-1.png\" \"%Temporary_dir%%Temporary_Name%_RGB_2x-2.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -channel RGBA -combine \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-0.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-1.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-2.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%-3.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-0.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-1.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-2.png\"\r\n" +
+                 "   del \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  ")  >nul\r\n" +
-                 "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
-                 "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
-                 "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if \"%output_height%\"==\"\" if /I \"" + param_outformat.ToString() + "\"==\".png\" (\r\n" +
-                 "   move /Y \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   move /Y \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") else (\r\n" +
-                 "   convert.exe \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%TEMP%\\%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") \r\n" +
-                 "if exist \"%TEMP%\\%Temporary_Name%%Image_ext%\" del \"%TEMP%\\%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
-                 "if exist \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" del \"%TEMP%\\%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
+                 "if exist \"%Temporary_dir%%Temporary_Name%%Image_ext%\" del \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
+                 "if exist \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" del \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
 
 
 

@@ -202,5 +202,17 @@ namespace waifu2x_i18n_gui.Properties {
                 this["Alphachannel_ImageMagick"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("%TEMP%")]
+        public string temporary_dir {
+            get {
+                return ((string)(this["temporary_dir"]));
+            }
+            set {
+                this["temporary_dir"] = value;
+            }
+        }
     }
 }
