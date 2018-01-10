@@ -174,7 +174,7 @@ namespace waifu2x_i18n_gui
 
             checkOutput_no_overwirit.IsChecked = true;
 
-            if (Properties.Settings.Default.store_output_dir == false)
+            if (Properties.Settings.Default.output_no_overwirit == false)
             { checkOutput_no_overwirit.IsChecked = false; }
 
             slider_value.Text = Properties.Settings.Default.scale_ratio;
