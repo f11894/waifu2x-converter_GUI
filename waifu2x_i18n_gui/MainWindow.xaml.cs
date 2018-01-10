@@ -55,6 +55,10 @@ namespace waifu2x_i18n_gui
             }
             // 設定をファイルから読み込む
             txtExt.Text = Properties.Settings.Default.informat;
+
+            if (Properties.Settings.Default.output_dir != "null")
+            { txtDstPath.Text = Properties.Settings.Default.output_dir; }
+
             if (Properties.Settings.Default.temporary_dir == "%TEMP%")
             {
                txtTempPath.Text = System.IO.Path.GetTempPath();
@@ -162,7 +166,12 @@ namespace waifu2x_i18n_gui
 
             if (Properties.Settings.Default.Alphachannel_ImageMagick == false)
             { checkAlphachannel_ImageMagick.IsChecked = false; }
-            
+
+            checkStore_output_dir.IsChecked = false;
+
+            if (Properties.Settings.Default.store_output_dir == true)
+            { checkStore_output_dir.IsChecked = true; }
+
             slider_value.Text = Properties.Settings.Default.scale_ratio;
             slider_zoom.Value = double.Parse(Properties.Settings.Default.scale_ratio);
 
@@ -217,6 +226,23 @@ namespace waifu2x_i18n_gui
             } else
             {
                Properties.Settings.Default.informat = "*.jpg *.jpeg *.png *.bmp *.tif *.tiff";
+            }
+
+            // 前回出力したパスを記憶する
+            if (checkStore_output_dir.IsChecked == true)
+            {
+                if (txtDstPath.Text.Trim() != "")
+                {
+                    Properties.Settings.Default.output_dir = txtDstPath.Text;
+                } else
+                {
+                    Properties.Settings.Default.output_dir = "null";
+                }
+
+            }
+            else
+            {
+                Properties.Settings.Default.output_dir = "null";
             }
 
             Properties.Settings.Default.outformat = txtOutExt.SelectedValue.ToString();
@@ -274,6 +300,7 @@ namespace waifu2x_i18n_gui
             Properties.Settings.Default.Aspect_ratio_keep = Convert.ToBoolean(checkAspect_ratio_keep.IsChecked);
             Properties.Settings.Default.SoundBeep = Convert.ToBoolean(checkSoundBeep.IsChecked);
             Properties.Settings.Default.Alphachannel_ImageMagick = Convert.ToBoolean(checkAlphachannel_ImageMagick.IsChecked);
+            Properties.Settings.Default.store_output_dir = Convert.ToBoolean(checkStore_output_dir.IsChecked);
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 slider_value.Text,
@@ -747,7 +774,6 @@ namespace waifu2x_i18n_gui
             }
             else
             {
-                txtTempPath.Clear();
                 Errormessage("Temporary folder is missing!");
                 return;
             }

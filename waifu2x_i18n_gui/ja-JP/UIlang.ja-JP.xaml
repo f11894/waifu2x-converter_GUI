@@ -51,6 +51,7 @@
     <sys:String x:Key="Main_checkDandD">D&amp;Dしたらすぐに変換を開始する</sys:String>
     <sys:String x:Key="Main_checkAspect_ratio_keep">縦横比を保つ</sys:String>
     <sys:String x:Key="Main_checkAlphachannel_ImageMagick">αチャンネルをImageMagickで分離して処理する</sys:String>
+    <sys:String x:Key="Main_checkStore_output_dir">前回出力したパスを記憶する</sys:String>
     <sys:String x:Key="Main_checkSoundBeep">処理が終わったら音を鳴らす</sys:String>
     <sys:String x:Key="Main_Device_Block">分割サイズ</sys:String>
     <!-- Run button -->

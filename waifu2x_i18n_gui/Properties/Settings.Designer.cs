@@ -214,5 +214,29 @@ namespace waifu2x_i18n_gui.Properties {
                 this["temporary_dir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("null")]
+        public string output_dir {
+            get {
+                return ((string)(this["output_dir"]));
+            }
+            set {
+                this["output_dir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool store_output_dir {
+            get {
+                return ((bool)(this["store_output_dir"]));
+            }
+            set {
+                this["store_output_dir"] = value;
+            }
+        }
     }
 }

@@ -50,5 +50,11 @@
     <Setting Name="temporary_dir" Type="System.String" Scope="User">
       <Value Profile="(Default)">%TEMP%</Value>
     </Setting>
+    <Setting Name="output_dir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">null</Value>
+    </Setting>
+    <Setting Name="store_output_dir" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
