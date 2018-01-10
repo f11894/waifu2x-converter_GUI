@@ -45,7 +45,6 @@
     <sys:String x:Key="MainTab_Mode">動作設定</sys:String>
     <!-- Tab:Mode -->
     <sys:String x:Key="Main_Mode_TempPath">一時フォルダ:</sys:String>
-    <sys:String x:Key="Main_Mode_Temp_Tooltip">通常は変更する必要ありません</sys:String>
     <sys:String x:Key="Main_Device_Compute">プロセッサーID</sys:String>
     <sys:String x:Key="Main_Device_Compute_Tooltip">使用するプロセッサーID。無指定で自動。</sys:String>
     <sys:String x:Key="Main_checkDandD">D&amp;Dしたらすぐに変換を開始する</sys:String>
