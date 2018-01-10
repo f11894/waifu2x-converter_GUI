@@ -147,35 +147,12 @@ namespace waifu2x_i18n_gui
             if (Properties.Settings.Default.OutQuality != 0)
             { txtOutQuality.Text = Properties.Settings.Default.OutQuality.ToString(); }
 
-            { checkDandD.IsChecked = false; }
-
-            if ( Properties.Settings.Default.DandD_check == true )
-            { checkDandD.IsChecked = true; }
-
-            { checkAspect_ratio_keep.IsChecked = false; }
-
-            if (Properties.Settings.Default.Aspect_ratio_keep == true)
-            { checkAspect_ratio_keep.IsChecked = true; }
-
-            { checkSoundBeep.IsChecked = false; }
-
-            if (Properties.Settings.Default.SoundBeep == true)
-            { checkSoundBeep.IsChecked = true; }
-
-            { checkAlphachannel_ImageMagick.IsChecked = true; }
-
-            if (Properties.Settings.Default.Alphachannel_ImageMagick == false)
-            { checkAlphachannel_ImageMagick.IsChecked = false; }
-
-            checkStore_output_dir.IsChecked = false;
-
-            if (Properties.Settings.Default.store_output_dir == true)
-            { checkStore_output_dir.IsChecked = true; }
-
-            checkOutput_no_overwirit.IsChecked = true;
-
-            if (Properties.Settings.Default.output_no_overwirit == false)
-            { checkOutput_no_overwirit.IsChecked = false; }
+            checkDandD.IsChecked = Properties.Settings.Default.DandD_check;
+            checkAspect_ratio_keep.IsChecked = Properties.Settings.Default.Aspect_ratio_keep;
+            checkSoundBeep.IsChecked = Properties.Settings.Default.SoundBeep;
+            checkAlphachannel_ImageMagick.IsChecked = Properties.Settings.Default.Alphachannel_ImageMagick;
+            checkStore_output_dir.IsChecked = Properties.Settings.Default.store_output_dir;
+            checkOutput_no_overwirit.IsChecked = Properties.Settings.Default.output_no_overwirit;
 
             slider_value.Text = Properties.Settings.Default.scale_ratio;
             slider_zoom.Value = double.Parse(Properties.Settings.Default.scale_ratio);
