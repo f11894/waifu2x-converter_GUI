@@ -172,6 +172,11 @@ namespace waifu2x_i18n_gui
             if (Properties.Settings.Default.store_output_dir == true)
             { checkStore_output_dir.IsChecked = true; }
 
+            checkOutput_no_overwirit.IsChecked = true;
+
+            if (Properties.Settings.Default.store_output_dir == false)
+            { checkOutput_no_overwirit.IsChecked = false; }
+
             slider_value.Text = Properties.Settings.Default.scale_ratio;
             slider_zoom.Value = double.Parse(Properties.Settings.Default.scale_ratio);
 
@@ -204,6 +209,7 @@ namespace waifu2x_i18n_gui
         public static StringBuilder Not_Aspect_ratio_keep_argument = new StringBuilder("");
         public static StringBuilder Aspect_ratio_keep_argument = new StringBuilder("");
         public static StringBuilder flagAlphachannel_ImageMagick = new StringBuilder("");
+        public static StringBuilder flagOutput_no_overwirit = new StringBuilder("");
 
         public static bool DandD_Mode = false;
         public static int FileCount = (0);
@@ -301,6 +307,7 @@ namespace waifu2x_i18n_gui
             Properties.Settings.Default.SoundBeep = Convert.ToBoolean(checkSoundBeep.IsChecked);
             Properties.Settings.Default.Alphachannel_ImageMagick = Convert.ToBoolean(checkAlphachannel_ImageMagick.IsChecked);
             Properties.Settings.Default.store_output_dir = Convert.ToBoolean(checkStore_output_dir.IsChecked);
+            Properties.Settings.Default.output_no_overwirit = Convert.ToBoolean(checkOutput_no_overwirit.IsChecked);
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 slider_value.Text,
@@ -864,6 +871,11 @@ namespace waifu2x_i18n_gui
             flagAlphachannel_ImageMagick.Clear();
             flagAlphachannel_ImageMagick.Append(checkAlphachannel_ImageMagick.IsChecked.ToString());
 
+            // 出力ファイルを上書きするかどうか判断するフラグを追加
+            flagOutput_no_overwirit.Clear();
+            flagOutput_no_overwirit.Append(checkOutput_no_overwirit.IsChecked.ToString());
+
+
             // Set Destination
             param_dst_dd.Clear();
             if (this.txtDstPath.Text.Trim() == "")
@@ -1172,10 +1184,12 @@ namespace waifu2x_i18n_gui
                  // bat共通の処理
                  "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
+                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" + 
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_height=" + this.output_height.Text + "\"\r\n" +
+                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
                  "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
@@ -1231,10 +1245,12 @@ namespace waifu2x_i18n_gui
                  ")\r\n" +
                  "if exist \"%Temporary_dir%%Temporary_Name%%Image_ext%\" del \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
                  "if exist \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" del \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
-                 
-                 
+                 ":waifu2x_run_skip\r\n" +
                  "endlocal\r\n" +
                  "set Image_path=\r\n" +
+
+
+
                  "del \"" + waifu2x_bat.ToString() + "\"\r\n" +
                  "exit /b\r\n" +
                  "\"\r\n" +
@@ -1346,16 +1362,17 @@ namespace waifu2x_i18n_gui
                         "call set \"relative_path=%%relative_path:~%len%%%\"\r\n" +
                         "set \"Output_dir=%OutputFolder%%relative_path%\"\r\n" +
                         "if not exist \"%Output_dir%\" mkdir \"%Output_dir%\"\r\n" +
-                        "if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
 
 
                  // bat共通の処理
                  "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
+                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_height=" + this.output_height.Text + "\"\r\n" +
+                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
                  "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
@@ -1400,7 +1417,7 @@ namespace waifu2x_i18n_gui
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-1.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-2.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 ")  >nul\r\n" +
+                 ") >nul\r\n" +
                  "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
@@ -1408,15 +1425,15 @@ namespace waifu2x_i18n_gui
                  "   move /Y \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") else (\r\n" +
                  "   convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
-                 ") \r\n" +
+                 ")\r\n" +
                  "if exist \"%Temporary_dir%%Temporary_Name%%Image_ext%\" del \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
                  "if exist \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" del \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
+                 ":waifu2x_run_skip\r\n" +
+                 "endlocal\r\n" +
+                 "set Image_path=\r\n" +
 
 
 
-                        ":waifu2x_run_skip\r\n" +
-                        "endlocal\r\n" +
-                        "set Image_path=\r\n" +
                         "set /a ProcessedCount=%ProcessedCount%+1\r\n" +
                         "exit /b\r\n" +
                         "\r\n" +
@@ -1543,10 +1560,12 @@ namespace waifu2x_i18n_gui
                  // bat共通の処理
                  "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
+                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_height=" + this.output_height.Text + "\"\r\n" +
+                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
                  "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
@@ -1591,7 +1610,7 @@ namespace waifu2x_i18n_gui
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-1.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x-2.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 ")  >nul\r\n" +
+                 ") >nul\r\n" +
                  "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize x%output_height% " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
@@ -1599,16 +1618,16 @@ namespace waifu2x_i18n_gui
                  "   move /Y \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
                  ") else (\r\n" +
                  "   convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
-                 ") \r\n" +
+                 ")\r\n" +
                  "if exist \"%Temporary_dir%%Temporary_Name%%Image_ext%\" del \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul\"\r\n" +
                  "if exist \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" del \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\"\r\n" +
-
-
-
-
                  ":waifu2x_run_skip\r\n" +
                  "endlocal\r\n" +
                  "set Image_path=\r\n" +
+
+
+
+
                  "exit /b\r\n" +
                  "\r\n" +
                  ":scale_ratio_set\r\n" +

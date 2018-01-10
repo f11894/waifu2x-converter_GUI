@@ -238,5 +238,17 @@ namespace waifu2x_i18n_gui.Properties {
                 this["store_output_dir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool output_no_overwirit {
+            get {
+                return ((bool)(this["output_no_overwirit"]));
+            }
+            set {
+                this["output_no_overwirit"] = value;
+            }
+        }
     }
 }
