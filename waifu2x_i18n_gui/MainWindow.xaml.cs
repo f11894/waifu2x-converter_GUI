@@ -748,8 +748,8 @@ namespace waifu2x_i18n_gui
             else
             {
                 txtTempPath.Clear();
-                txtTempPath.AppendText(System.IO.Path.GetTempPath());
-                param_tempdir.Append(System.IO.Path.GetTempPath());
+                Errormessage("Temporary folder is missing!");
+                return;
             }
 
             //  出力形式を決定する
