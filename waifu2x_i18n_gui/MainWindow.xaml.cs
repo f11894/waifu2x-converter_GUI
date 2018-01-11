@@ -451,9 +451,19 @@ namespace waifu2x_i18n_gui
                     sw.WriteLine("chcp 65001 >nul");
                     sw.WriteLine("set \"ProcessedCount=0\"");
                     FileCount = 0;
+                    string stCsvData = txtExt.Text;
+                    string[] stArrayData = stCsvData.Split(' ');
                     for (int i = 0; i < fn.Length; i++)
                     {
-                        FileCount ++ ;
+                            if (Directory.Exists(fn[i]))
+                            {
+                                for (int f = 0; f < stArrayData.Length; f++)
+                                {
+                                    FileCount = FileCount + Directory.GetFiles(fn[i], stArrayData[f], SearchOption.AllDirectories).Length;
+                                }
+                            }
+                            if (File.Exists(fn[i]))
+                            { FileCount++; }
                         string list = fn[i];
                         string list2 = list.Replace("%", "%%");
                         sw.WriteLine("set list_path=\"" + list2 + "\"&&call :list_Allocation");
