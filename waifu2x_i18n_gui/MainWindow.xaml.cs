@@ -1504,17 +1504,17 @@ namespace waifu2x_i18n_gui
                  "set \"OutputFolder=" + param_dst_dd.ToString() + "\"\r\n" +
                  // "cls\r\n" +
                  "for %%A IN (%list_path%) do set \"A=%%~aA\"\r\n" +
-                 "IF not \"%A:~0,1%\"==\"d\" set list_path_file=1\r\n" +
-                 "IF \"%A:~0,1%\"==\"d\" set list_path_dir=1\r\n" +
+                 "IF not \"%A:~0,1%\"==\"d\" set list_path_attribute=file\r\n" +
+                 "IF \"%A:~0,1%\"==\"d\" set list_path_attribute=folder\r\n" +
                  // ファイルの処理
-                 "if \"%list_path_file%\"==\"1\" set Image_path=%list_path%\r\n" +
-                 "if \"%list_path_file%\"==\"1\" call :waifu2x_run\r\n" +
+                 "if \"%list_path_attribute%\"==\"file\" set Image_path=%list_path%\r\n" +
+                 "if \"%list_path_attribute%\"==\"file\" call :waifu2x_run\r\n" +
                  // フォルダの処理
-                 "if \"%list_path_dir%\"==\"1\" if \"%OutputFolder%\"==\"\" for %%A in (%list_path%) do set \"str=%%~A\"\r\n" +
-                 "if \"%list_path_dir%\"==\"1\" if not \"%OutputFolder%\"==\"\" for %%A in (%list_path%) do set \"str=%%~dpA\"\r\n" +
-                 "if \"%list_path_dir%\"==\"1\" set \"len=0\"\r\n" +
-                 "if \"%list_path_dir%\"==\"1\" call :word_count\r\n" +
-                 "if \"%list_path_dir%\"==\"1\" for /r %list_path% %%i in (" + param_informat.ToString() + ") do (\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" if \"%OutputFolder%\"==\"\" for %%A in (%list_path%) do set \"str=%%~A\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" if not \"%OutputFolder%\"==\"\" for %%A in (%list_path%) do set \"str=%%~dpA\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" set \"len=0\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" call :word_count\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" for /r %list_path% %%i in (" + param_informat.ToString() + ") do (\r\n" +
                  "   set \"OUTPUT_Name=%%~ni" + param_outformat.ToString() + "\"\r\n" +
                  "   set Image_path=\"%%i\"\r\n" +
                  "   call :waifu2x_run\r\n" +
@@ -1532,14 +1532,14 @@ namespace waifu2x_i18n_gui
                  "echo progress %ProcessedCount%/%FileCount%\r\n" +
                  "setlocal\r\n" +
                  // ファイルの処理
-                 "if \"%list_path_file%\"==\"1\" for %%A IN (%list_path%) do set \"OUTPUT_Name=%%~nA" + param_dst.ToString() + param_outformat.ToString() + "\"\r\n" +
-                 "if \"%list_path_file%\"==\"1\" if \"%OutputFolder%\"==\"\" for %%A IN (%list_path%) DO set \"Output_dir=%%~dpA\"\r\n" +
-                 "if \"%list_path_file%\"==\"1\" if not \"%OutputFolder%\"==\"\" set \"Output_dir=%OutputFolder%\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"file\" for %%A IN (%list_path%) do set \"OUTPUT_Name=%%~nA" + param_dst.ToString() + param_outformat.ToString() + "\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"file\" if \"%OutputFolder%\"==\"\" for %%A IN (%list_path%) DO set \"Output_dir=%%~dpA\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"file\" if not \"%OutputFolder%\"==\"\" set \"Output_dir=%OutputFolder%\"\r\n" +
                  //フォルダの処理
-                 "if \"%list_path_dir%\"==\"1\" if \"%OutputFolder%\"==\"\" for %%A IN (%list_path%) DO set \"OutputFolder=%%~A" + param_dst.ToString() + "\\\"\r\n" +
-                 "if \"%list_path_dir%\"==\"1\" FOR %%A IN (%Image_path%) DO set \"relative_path=%%~dpA\"\r\n" +
-                 "if \"%list_path_dir%\"==\"1\" call set \"relative_path=%%relative_path:~%len%%%\"\r\n" +
-                 "if \"%list_path_dir%\"==\"1\" set \"Output_dir=%OutputFolder%%relative_path%\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" if \"%OutputFolder%\"==\"\" for %%A IN (%list_path%) DO set \"OutputFolder=%%~A" + param_dst.ToString() + "\\\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" FOR %%A IN (%Image_path%) DO set \"relative_path=%%~dpA\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" call set \"relative_path=%%relative_path:~%len%%%\"\r\n" +
+                 "if \"%list_path_attribute%\"==\"folder\" set \"Output_dir=%OutputFolder%%relative_path%\"\r\n" +
                  "if not exist \"%Output_dir%\" mkdir \"%Output_dir%\"\r\n" +
 
 
