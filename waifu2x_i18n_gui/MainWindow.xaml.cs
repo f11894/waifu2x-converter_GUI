@@ -1458,6 +1458,7 @@ namespace waifu2x_i18n_gui
                         "exit /b\r\n" +
                         "\r\n" +
                         ":end\r\n" +
+                        "echo.\r\n" +
                         "del \"" + waifu2x_bat.ToString() + "\"\r\n" +
                         "exit /b\r\n"
                    ;
@@ -1501,7 +1502,6 @@ namespace waifu2x_i18n_gui
                  ":list_Allocation\r\n" +
                  "set FileCount=" + FileCount + "\r\n" +
                  "set \"OutputFolder=" + param_dst_dd.ToString() + "\"\r\n" +
-                 "echo progress %ProcessedCount%/%FileCount%\r\n" +
                  // "cls\r\n" +
                  "for %%A IN (%list_path%) do set \"A=%%~aA\"\r\n" +
                  "IF not \"%A:~0,1%\"==\"d\" set list_path_file=1\r\n" +
@@ -1529,6 +1529,7 @@ namespace waifu2x_i18n_gui
                  "exit /b\r\n" +
                  "\r\n" +
                  ":waifu2x_run\r\n" +
+                 "echo progress %ProcessedCount%/%FileCount%\r\n" +
                  "setlocal\r\n" +
                  // ファイルの処理
                  "if \"%list_path_file%\"==\"1\" for %%A IN (%list_path%) do set \"OUTPUT_Name=%%~nA" + param_dst.ToString() + param_outformat.ToString() + "\"\r\n" +
@@ -1649,6 +1650,7 @@ namespace waifu2x_i18n_gui
                  "exit /b\r\n" +
                  "\r\n" +
                  ":end\r\n" +
+                 "echo.\r\n" +
                  "del \"" + waifu2x_bat.ToString() + "\"\r\n" +
                  "exit /b\r\n"
             ;
