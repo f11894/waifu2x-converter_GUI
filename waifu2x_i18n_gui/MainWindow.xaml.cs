@@ -359,8 +359,8 @@ namespace waifu2x_i18n_gui
             string msg =
                 "Multilingual GUI for waifu2x-converter\n" +
                 "nanashi (2018)\n" +
-                "Version 1.5.6\n" +
-                "BuildDate: 11 Jan,2018\n" +
+                "Version 1.5.7\n" +
+                "BuildDate: 12 Jan,2018\n" +
                 "License: Do What the Fuck You Want License";
             MessageBox.Show(msg);
         }
@@ -430,10 +430,13 @@ namespace waifu2x_i18n_gui
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] fn = (string[])e.Data.GetData(DataFormats.FileDrop);
+                
                 if (checkDandD.IsChecked == false)
                 { this.txtSrcPath.Text = fn[0];}
+                
                 if (checkDandD.IsChecked == true) if (DandD_Mode == false)
                 {
+                    this.btnRun.IsEnabled = false;
                     DandD_Mode = true;
                     this.txtSrcPath.Clear();
                     Guid g = System.Guid.NewGuid();
