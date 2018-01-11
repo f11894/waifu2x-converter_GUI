@@ -425,7 +425,7 @@ namespace waifu2x_i18n_gui
             e.Handled = true;
         }
 
-        private void On_SrcDrop(object sender, DragEventArgs e)
+        private async void On_SrcDrop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -459,7 +459,7 @@ namespace waifu2x_i18n_gui
                             {
                                 for (int f = 0; f < stArrayData.Length; f++)
                                 {
-                                    FileCount = FileCount + Directory.GetFiles(fn[i], stArrayData[f], SearchOption.AllDirectories).Length;
+                                    await Task.Run(() => FileCount = FileCount + Directory.GetFiles(fn[i], stArrayData[f], SearchOption.AllDirectories).Length);
                                 }
                             }
                             if (File.Exists(fn[i]))
@@ -1519,7 +1519,6 @@ namespace waifu2x_i18n_gui
                  "   set Image_path=\"%%i\"\r\n" +
                  "   call :waifu2x_run\r\n" +
                  ")\r\n" +
-                 "set /a ProcessedCount=%ProcessedCount%+1\r\n" +
                  "exit /b\r\n" +
                  ":word_count\r\n" +
                  "if not \"%str%\"==\"\" (\r\n" +
@@ -1613,7 +1612,7 @@ namespace waifu2x_i18n_gui
 
 
 
-
+                 "set /a ProcessedCount=%ProcessedCount%+1\r\n" +
                  "exit /b\r\n" +
                  "\r\n" +
                  ":scale_ratio_set\r\n" +
