@@ -46,8 +46,10 @@
     <!-- Tab:Mode -->
     <sys:String x:Key="Main_Mode_TempPath">一時フォルダ:</sys:String>
     <sys:String x:Key="Main_Mode_Alphachannel_background">アルファチャンネルの背景色:</sys:String>
+    <sys:String x:Key="Main_Device_gp">デバイス</sys:String>
     <sys:String x:Key="Main_Device_Compute">プロセッサーID</sys:String>
     <sys:String x:Key="Main_Device_Compute_Tooltip">使用するプロセッサーID。無指定で自動。</sys:String>
+    <sys:String x:Key="Main_Device_CPUthread">CPUのスレッド数</sys:String>
     <sys:String x:Key="Main_checkDandD">D&amp;Dしたらすぐに変換を開始する</sys:String>
     <sys:String x:Key="Main_checkAspect_ratio_keep">縦横比を保つ</sys:String>
     <sys:String x:Key="Main_checkAlphachannel_ImageMagick">アルファチャンネルをImageMagickで分離して処理する</sys:String>

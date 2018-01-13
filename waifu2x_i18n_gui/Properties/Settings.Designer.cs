@@ -262,5 +262,17 @@ namespace waifu2x_i18n_gui.Properties {
                 this["Alphachannel_background"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string CPUthread {
+            get {
+                return ((string)(this["CPUthread"]));
+            }
+            set {
+                this["CPUthread"] = value;
+            }
+        }
     }
 }

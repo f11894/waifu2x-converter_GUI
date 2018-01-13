@@ -121,9 +121,16 @@
                                 <RadioButton Tag="--block_size 512" Name="btn512" Margin="2" Checked="OnBlockChecked">512</RadioButton>
                             </StackPanel>
                         </GroupBox>
-                        <GroupBox Name="gpDevice" Header="{DynamicResource ResourceKey=Main_Device_Compute}" Padding="3" Margin="3" Height="100">
-                            <StackPanel Orientation="Vertical" Margin="3">
-                                <TextBox Name="txtDevice" HorizontalAlignment="Right" MinWidth="50" Margin="1" Text="" ToolTip="{DynamicResource ResourceKey=Main_Device_Compute_Tooltip}" ></TextBox>
+                        <GroupBox Name="gpDevice" Header="{DynamicResource ResourceKey=Main_Device_gp}" Padding="1" Margin="1">
+                            <StackPanel Orientation="Vertical" Margin="1">
+                                <StackPanel Orientation="Horizontal" Margin="1">
+                                    <Label Target="{Binding ElementName=txtDevice}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Device_Compute}"></Label>
+                                    <TextBox Name="txtDevice" HorizontalAlignment="Right" MinWidth="50" Margin="1" MaxHeight="20" Text="" ToolTip="{DynamicResource ResourceKey=Main_Device_Compute_Tooltip}" ></TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="1">
+                                    <Label Target="{Binding ElementName=txtCPUthread}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Device_CPUthread}"></Label>
+                                    <TextBox Name="txtCPUthread" HorizontalAlignment="Right" MinWidth="50" MaxHeight="20" Margin="1" Text=""></TextBox>
+                                </StackPanel>
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>
