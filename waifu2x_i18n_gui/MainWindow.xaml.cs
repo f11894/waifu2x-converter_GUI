@@ -160,6 +160,7 @@ namespace waifu2x_i18n_gui
             //cbTTA.IsChecked = false;
 
             txtOutExt.SelectedValue = Properties.Settings.Default.outformat;
+            ComboAlphachannel_background.SelectedValue = Properties.Settings.Default.Alphachannel_background;
 
         }
         public static StringBuilder waifu2xbinary = new StringBuilder("");
@@ -181,6 +182,7 @@ namespace waifu2x_i18n_gui
         public static StringBuilder param_outquality = new StringBuilder("");
         public static StringBuilder param_outformat = new StringBuilder(".png");
         public static StringBuilder param_tempdir = new StringBuilder("%TEMP%");
+        public static StringBuilder param_Alphachannel_background = new StringBuilder("white");
 
         public static StringBuilder random32 = new StringBuilder("");
         public static StringBuilder Not_Aspect_ratio_keep_argument = new StringBuilder("");
@@ -229,6 +231,7 @@ namespace waifu2x_i18n_gui
             }
 
             Properties.Settings.Default.outformat = txtOutExt.SelectedValue.ToString();
+            Properties.Settings.Default.Alphachannel_background = ComboAlphachannel_background.SelectedValue.ToString();
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 txtOutQuality.Text,
@@ -778,7 +781,18 @@ namespace waifu2x_i18n_gui
             //  出力形式を決定する
             param_outformat.Clear();
             param_outformat.Append(txtOutExt.Text);
-            
+
+            // アルファチャンネルの背景色を設定する
+            param_Alphachannel_background.Clear();
+            if (ComboAlphachannel_background.Text != "none")
+            {
+                param_Alphachannel_background.Append("   convert.exe %Image_path% ^( +clone -alpha opaque -fill " + ComboAlphachannel_background.Text + " -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off png24:\"%Temporary_dir%%Temporary_Name%_RGB.png\"");
+            }
+            else
+            {
+                param_Alphachannel_background.Append("   convert.exe %Image_path% -channel RGB -combine -alpha off png24:\"%Temporary_dir%%Temporary_Name%_RGB.png\"");
+            }
+
             // D&D処理時に出力先フォルダが見つからなければ出力先をクリアする
             if (DandD_Mode == true)
             {
@@ -1202,7 +1216,7 @@ namespace waifu2x_i18n_gui
                  "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
                  // アルファチャンネルが有ったらImageMagickで分離して拡大
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   convert.exe %Image_path% ^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off png24:\"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 param_Alphachannel_background.ToString() + "\r\n" +
                  "   convert.exe %Image_path% -channel matte -separate +matte png24:\"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%Temporary_dir%%Temporary_Name%_alpha.png\"') do set \"image_alpha_color=%%a\"\r\n" +
                  "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%Temporary_dir%%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
@@ -1378,7 +1392,7 @@ namespace waifu2x_i18n_gui
                  "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
                  // アルファチャンネルが有ったらImageMagickで分離して拡大
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   convert.exe %Image_path% ^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off png24:\"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 param_Alphachannel_background.ToString() + "\r\n" +
                  "   convert.exe %Image_path% -channel matte -separate +matte png24:\"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%Temporary_dir%%Temporary_Name%_alpha.png\"') do set \"image_alpha_color=%%a\"\r\n" +
                  "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%Temporary_dir%%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
@@ -1563,7 +1577,7 @@ namespace waifu2x_i18n_gui
                  "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
                  // アルファチャンネルが有ったらImageMagickで分離して拡大
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
-                 "   convert.exe %Image_path% ^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off png24:\"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
+                 param_Alphachannel_background.ToString() + "\r\n" +
                  "   convert.exe %Image_path% -channel matte -separate +matte png24:\"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" +
                  "   for /f \"delims=\" %%a in ('identify.exe -format \"%%k\" \"%Temporary_dir%%Temporary_Name%_alpha.png\"') do set \"image_alpha_color=%%a\"\r\n" +
                  "   " + waifu2xbinary.ToString() + " " + " -i" + " " + "\"%Temporary_dir%%Temporary_Name%_RGB.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +

@@ -250,5 +250,17 @@ namespace waifu2x_i18n_gui.Properties {
                 this["output_no_overwirit"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string Alphachannel_background {
+            get {
+                return ((string)(this["Alphachannel_background"]));
+            }
+            set {
+                this["Alphachannel_background"] = value;
+            }
+        }
     }
 }
