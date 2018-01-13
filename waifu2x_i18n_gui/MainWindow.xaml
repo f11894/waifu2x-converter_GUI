@@ -143,15 +143,15 @@
                             <StackPanel Orientation="Horizontal">
                                 <Label Target="{Binding ElementName=ComboAlphachannel_background}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_Alphachannel_background}"></Label>
                                 <ComboBox Name="ComboAlphachannel_background" MinWidth="50" HorizontalAlignment="Stretch" SelectedValuePath="Tag">
-                                    <ComboBoxItem Tag="0" Content="white" IsSelected="True"/>
-                                    <ComboBoxItem Tag="1" Content="black"/>
-                                    <ComboBoxItem Tag="2" Content="red"/>
-                                    <ComboBoxItem Tag="3" Content="magenta"/>
+                                    <ComboBoxItem Tag="0" Content="none" IsSelected="True"/>
+                                    <ComboBoxItem Tag="1" Content="white"/>
+                                    <ComboBoxItem Tag="2" Content="black"/>
+                                    <ComboBoxItem Tag="3" Content="red"/>
                                     <ComboBoxItem Tag="4" Content="green"/>
-                                    <ComboBoxItem Tag="5" Content="cyan"/>
-                                    <ComboBoxItem Tag="6" Content="blue"/>
-                                    <ComboBoxItem Tag="7" Content="yellow"/>
-                                    <ComboBoxItem Tag="8" Content="none"/>
+                                    <ComboBoxItem Tag="5" Content="blue"/>
+                                    <ComboBoxItem Tag="6" Content="cyan"/>
+                                    <ComboBoxItem Tag="7" Content="magenta"/>
+                                    <ComboBoxItem Tag="8" Content="yellow"/>
                                 </ComboBox>
                             </StackPanel>
                             <CheckBox Name="checkStore_output_dir" Margin="3" Content="{DynamicResource ResourceKey=Main_checkStore_output_dir}" ></CheckBox>
