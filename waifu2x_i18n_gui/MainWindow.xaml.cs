@@ -1212,10 +1212,10 @@ namespace waifu2x_i18n_gui
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
                  "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%Temporary_dir%%Temporary_Name%_alpha.png\" -sample %image_2x_width%x%image_2x_height%! \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%_alpha.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -compose CopyOpacity -composite png32:\"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" ++
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -compose CopyOpacity -composite png32:\"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   del \"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" 
+                 "   del \"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  ")\r\n" +
                  "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
@@ -1388,10 +1388,10 @@ namespace waifu2x_i18n_gui
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
                  "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%Temporary_dir%%Temporary_Name%_alpha.png\" -sample %image_2x_width%x%image_2x_height%! \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%_alpha.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -compose CopyOpacity -composite png32:\"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" ++
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -compose CopyOpacity -composite png32:\"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   del \"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" 
+                 "   del \"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  ") >nul\r\n" +
                  "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
@@ -1573,10 +1573,10 @@ namespace waifu2x_i18n_gui
                  "if \"%image_alpha%\"==\"true\" (\r\n" +
                  "   if \"%image_alpha_color%\"==\"1\" convert.exe \"%Temporary_dir%%Temporary_Name%_alpha.png\" -sample %image_2x_width%x%image_2x_height%! \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  "   if not \"%image_alpha_color%\"==\"1\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%_alpha.png\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
-                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -compose CopyOpacity -composite png32:\"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" ++
+                 "   convert.exe \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\" \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\" -compose CopyOpacity -composite png32:\"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_RGB_2x.png\"\r\n" +
-                 "   del \"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" 
+                 "   del \"%Temporary_dir%%Temporary_Name%_alpha.png\"\r\n" +
                  "   del \"%Temporary_dir%%Temporary_Name%_alpha_2x.png\"\r\n" +
                  ") >nul\r\n" +
                  "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" -resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + " " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL && move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
