@@ -187,7 +187,7 @@ namespace waifu2x_i18n_gui
         public static StringBuilder param_outquality = new StringBuilder("");
         public static StringBuilder param_outformat = new StringBuilder(".png");
         public static StringBuilder param_tempdir = new StringBuilder("%TEMP%");
-        public static StringBuilder param_Alphachannel_background = new StringBuilder("white");
+        public static StringBuilder param_Alphachannel_background = new StringBuilder("none");
 
         public static StringBuilder random32 = new StringBuilder("");
         public static StringBuilder Not_Aspect_ratio_keep_argument = new StringBuilder("");
@@ -1385,8 +1385,7 @@ namespace waifu2x_i18n_gui
                         "FOR /f \"DELIMS=\" %%A IN ('dir " + param_informat.ToString() + " /A-D /S /B ^| find /c /v \"\"') DO SET \"FileCount=%%A\"\r\n" +
                         "popd\r\n" +
                         "for /r \"" + param_src.ToString() + "\" %%i in (" + param_informat.ToString() + ") do set Image_path=\"%%i\"&&call :waifu2x_run\r\n" +
-                        "\r\n" +
-                        "cls\r\n" +
+                        "\r\n" ++
                         "goto end\r\n" +
                         "\r\n" +
                         ":word_count\r\n" +
@@ -1562,13 +1561,11 @@ namespace waifu2x_i18n_gui
 
                 //param_tta.ToString()
                 // Setup ProcessStartInfo
-                string TextBox1 = "cls\r\n" + 
-                 "goto end\r\n" +
+                string TextBox1 = "goto end\r\n" +
                  "\r\n" +
                  ":list_Allocation\r\n" +
                  "set FileCount=" + FileCount + "\r\n" +
                  "set \"OutputFolder=" + param_dst_dd.ToString() + "\"\r\n" +
-                 // "cls\r\n" +
                  "for %%A IN (%list_path%) do set \"A=%%~aA\"\r\n" +
                  "IF not \"%A:~0,1%\"==\"d\" set list_path_attribute=file\r\n" +
                  "IF \"%A:~0,1%\"==\"d\" set list_path_attribute=folder\r\n" +
