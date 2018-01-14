@@ -1244,9 +1244,7 @@ namespace waifu2x_i18n_gui
                  "if \"" + param_mode.ToString() + "\"==\"auto_scale\" if not \"%jpg%\"==\"1\" set \"Mode=scale\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"auto_scale\" set \"Mode=" + param_mode.ToString() + " " + param_denoise.ToString() + "\"\r\n" +
                  "set \"Output_format=" + param_outformat.ToString() + "\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".jpg\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".jp2\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".webp\" if not \"" + param_outquality.ToString() + "\"==\"100\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
+                 "for %%i in (.jpg,.jp2,.ppm) do if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\"%%~i\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
                  "set \"Temporary_Name=" + random32.ToString() + "_%RANDOM%_%RANDOM%_%RANDOM%_\"\r\n" +
                  // アルファチャンネルが無い場合は普通に拡大
                  "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
@@ -1446,9 +1444,7 @@ namespace waifu2x_i18n_gui
                  "if \"" + param_mode.ToString() + "\"==\"auto_scale\" if not \"%jpg%\"==\"1\" set \"Mode=scale\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"auto_scale\" set \"Mode=" + param_mode.ToString() + " " + param_denoise.ToString() + "\"\r\n" +
                  "set \"Output_format=" + param_outformat.ToString() + "\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".jpg\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".jp2\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".webp\" if not \"" + param_outquality.ToString() + "\"==\"100\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
+                 "for %%i in (.jpg,.jp2,.ppm) do if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\"%%~i\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
                  "set \"Temporary_Name=" + random32.ToString() + "_%RANDOM%_%RANDOM%_%RANDOM%_\"\r\n" +
                  // アルファチャンネルが無い場合は普通に拡大
                  "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
@@ -1657,9 +1653,7 @@ namespace waifu2x_i18n_gui
                  "if \"" + param_mode.ToString() + "\"==\"auto_scale\" if not \"%jpg%\"==\"1\" set \"Mode=scale\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"auto_scale\" set \"Mode=" + param_mode.ToString() + " " + param_denoise.ToString() + "\"\r\n" +
                  "set \"Output_format=" + param_outformat.ToString() + "\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".jpg\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".jp2\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
-                 "if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\".webp\" if not \"" + param_outquality.ToString() + "\"==\"100\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
+                 "for %%i in (.jpg,.jp2,.ppm) do if \"%image_alpha%\"==\"true\" if \"%Output_format%\"==\"%%~i\" set \"alpha_off_argument=^( +clone -alpha opaque -fill white -colorize 100%% ^) +swap -geometry +0+0 -compose Over -composite -alpha off\"\r\n" +
                  "set \"Temporary_Name=" + random32.ToString() + "_%RANDOM%_%RANDOM%_%RANDOM%_\"\r\n" +
                  // アルファチャンネルが無い場合は普通に拡大
                  "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
