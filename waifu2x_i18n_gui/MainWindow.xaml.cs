@@ -1385,7 +1385,7 @@ namespace waifu2x_i18n_gui
                         "FOR /f \"DELIMS=\" %%A IN ('dir " + param_informat.ToString() + " /A-D /S /B ^| find /c /v \"\"') DO SET \"FileCount=%%A\"\r\n" +
                         "popd\r\n" +
                         "for /r \"" + param_src.ToString() + "\" %%i in (" + param_informat.ToString() + ") do set Image_path=\"%%i\"&&call :waifu2x_run\r\n" +
-                        "\r\n" ++
+                        "\r\n" +
                         "goto end\r\n" +
                         "\r\n" +
                         ":word_count\r\n" +
