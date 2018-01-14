@@ -1523,7 +1523,7 @@ namespace waifu2x_i18n_gui
                         "exit /b\r\n" +
                         "\r\n" +
                         ":end\r\n" +
-                        "echo.\r\n" +
+                        "cls\r\n" +
                         "del \"" + waifu2x_bat.ToString() + "\"\r\n" +
                         "exit /b\r\n"
                    ;
@@ -1722,7 +1722,7 @@ namespace waifu2x_i18n_gui
                  "exit /b\r\n" +
                  "\r\n" +
                  ":end\r\n" +
-                 "echo.\r\n" +
+                 "cls\r\n" +
                  "del \"" + waifu2x_bat.ToString() + "\"\r\n" +
                  "exit /b\r\n"
             ;
