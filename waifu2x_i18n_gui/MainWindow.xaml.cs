@@ -1778,7 +1778,16 @@ namespace waifu2x_i18n_gui
                 MessageBox.Show("Some parameters do not mix well and crashed...");
                 //throw;
             }
-            pHandle.BeginOutputReadLine();
+            
+            try
+            {
+                pHandle.BeginOutputReadLine();
+            }
+            catch (Exception)
+            {
+                this.CLIOutput.Clear();
+                this.CLIOutput.Text = "BeginOutputReadLine crashed...";
+            }
             //pHandle.BeginErrorReadLine();
             //MessageBox.Show("Some parameters do not mix well and crashed...");
 
