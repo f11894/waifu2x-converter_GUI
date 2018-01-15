@@ -346,7 +346,7 @@ namespace waifu2x_i18n_gui
 
             try
             {
-                pHandle.Kill();
+                KillProcessTree(pHandle);
             }
             catch (Exception) { /*Nothing*/ }
 
@@ -379,8 +379,8 @@ namespace waifu2x_i18n_gui
             string msg =
                 "Multilingual GUI for waifu2x-converter\n" +
                 "nanashi (2018)\n" +
-                "Version 1.5.8\n" +
-                "BuildDate: 14 Jan,2018\n" +
+                "Version 1.5.9\n" +
+                "BuildDate: 15 Jan,2018\n" +
                 "License: Do What the Fuck You Want License";
             MessageBox.Show(msg);
         }
@@ -621,6 +621,19 @@ namespace waifu2x_i18n_gui
             
         }
 
+        private void KillProcessTree(System.Diagnostics.Process process)
+        {
+          string taskkill = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "taskkill.exe");
+          using (var procKiller = new System.Diagnostics.Process()) {
+            procKiller.StartInfo.FileName = taskkill;
+            procKiller.StartInfo.Arguments = string.Format("/PID {0} /T /F", process.Id);
+            procKiller.StartInfo.CreateNoWindow = true;
+            procKiller.StartInfo.UseShellExecute = false;
+            procKiller.Start();
+            procKiller.WaitForExit();
+          }
+        }
+        
         private void OnProcessExit(object sender, EventArgs e)
         {
             if (!flagAbort)
@@ -640,12 +653,12 @@ namespace waifu2x_i18n_gui
             pHandle.Close();
             Dispatcher.BeginInvoke(new Action(delegate
             {
+                if (this.btnRun.IsEnabled == false) if (checkSoundBeep.IsChecked == true)
+                { System.Media.SystemSounds.Beep.Play(); }
+                
                 this.btnAbort.IsEnabled = false;
                 this.btnRun.IsEnabled = true;
                 //this.CLIOutput.Text = console_buffer.ToString();
-
-                if (checkSoundBeep.IsChecked == true)
-                { System.Media.SystemSounds.Beep.Play(); }
 
             }), System.Windows.Threading.DispatcherPriority.ApplicationIdle, null);
             flagAbort = false;
@@ -661,7 +674,7 @@ namespace waifu2x_i18n_gui
                     pHandle.CancelOutputRead();
                 }
                 catch (Exception) { /*Nothing*/ }
-                pHandle.Kill();
+                KillProcessTree(pHandle);
 
                     if (waifu2x_bat.ToString() != "")
                     {
@@ -1761,7 +1774,7 @@ namespace waifu2x_i18n_gui
             }
             catch (Exception)
             {
-                pHandle.Kill();
+                KillProcessTree(pHandle);
                 MessageBox.Show("Some parameters do not mix well and crashed...");
                 //throw;
             }
