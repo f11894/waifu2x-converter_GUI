@@ -1230,9 +1230,10 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
+                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
-                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
@@ -1240,7 +1241,6 @@ namespace waifu2x_i18n_gui
                  "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" set \"resize_argument=-resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" set \"resize_argument=-resize %output_width%x\"\r\n" +
                  "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" set \"resize_argument=-resize x%output_height%\"\r\n" +
-                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
                  "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
@@ -1421,9 +1421,10 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
+                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
-                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
@@ -1431,7 +1432,6 @@ namespace waifu2x_i18n_gui
                  "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" set \"resize_argument=-resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" set \"resize_argument=-resize %output_width%x\"\r\n" +
                  "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" set \"resize_argument=-resize x%output_height%\"\r\n" +
-                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
                  "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
@@ -1620,9 +1620,10 @@ namespace waifu2x_i18n_gui
 
 
                  // bat共通の処理
+                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
+                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "set \"Temporary_dir=" + param_tempdir.ToString() + "\"\r\n" +
                  "set \"Alphachannel_ImageMagick=" + flagAlphachannel_ImageMagick.ToString() + "\"\r\n" +
-                 "set \"Output_no_overwirit=" + flagOutput_no_overwirit.ToString() + "\"\r\n" +
                  "set \"keep_aspect_ratio=" + Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "set \"scale_ratio=" + this.slider_zoom.Value.ToString() + "\"\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" set \"output_width=" + this.output_width.Text + "\"\r\n" +
@@ -1630,7 +1631,6 @@ namespace waifu2x_i18n_gui
                  "if not \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" set \"resize_argument=-resize %output_width%x%output_height%" + Not_Aspect_ratio_keep_argument.ToString() + "\"\r\n" +
                  "if not \"%output_width%\"==\"\" if \"%output_height%\"==\"\" set \"resize_argument=-resize %output_width%x\"\r\n" +
                  "if \"%output_width%\"==\"\" if not \"%output_height%\"==\"\" set \"resize_argument=-resize x%output_height%\"\r\n" +
-                 "if \"%Output_no_overwirit%\"==\"True\" if exist \"%Output_dir%%OUTPUT_Name%\" goto waifu2x_run_skip\r\n" +
                  "FOR %%A IN (%Image_path%) DO set \"Image_ext=%%~xA\"\r\n" +
                  "if \"%Alphachannel_ImageMagick%\"==\"True\" if /i \"%Image_ext%\"==\".png\" identify.exe -format \"%%A\" %Image_path% | find \"Blend\"> NUL && set image_alpha=true\r\n" +
                  "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
