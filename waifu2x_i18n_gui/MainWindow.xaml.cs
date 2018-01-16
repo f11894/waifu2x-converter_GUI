@@ -1353,9 +1353,8 @@ namespace waifu2x_i18n_gui
                 sw.Write(TextBox1);
                 sw.Close();
 
-                psinfo.FileName = waifu2x_bat.ToString();
-
-                // psinfo.Arguments = full_param;
+                    psinfo.FileName = System.Environment.GetEnvironmentVariable("ComSpec");
+                    psinfo.Arguments = string.Format(@"/c {0}", waifu2x_bat.ToString());
                     psinfo.RedirectStandardError = true;
                     psinfo.RedirectStandardOutput = true;
                     psinfo.UseShellExecute = false;
@@ -1549,8 +1548,8 @@ namespace waifu2x_i18n_gui
                    sw.Write(TextBox1);
                    sw.Close();
 
-                    psinfo.FileName = waifu2x_bat.ToString();
-                    //psinfo.Arguments = full_param;
+                    psinfo.FileName = System.Environment.GetEnvironmentVariable("ComSpec");
+                    psinfo.Arguments = string.Format(@"/c {0}", waifu2x_bat.ToString());
                     psinfo.RedirectStandardError = true;
                     psinfo.RedirectStandardOutput = true;
                     psinfo.UseShellExecute = false;
@@ -1748,8 +1747,8 @@ namespace waifu2x_i18n_gui
                 sw.Write(TextBox1);
                 sw.Close();
 
-                psinfo.FileName = waifu2x_bat.ToString();
-                //psinfo.Arguments = full_param;
+                psinfo.FileName = System.Environment.GetEnvironmentVariable("ComSpec");
+                psinfo.Arguments = string.Format(@"/c {0}", waifu2x_bat.ToString());
                 psinfo.RedirectStandardError = true;
                 psinfo.RedirectStandardOutput = true;
                 psinfo.UseShellExecute = false;
