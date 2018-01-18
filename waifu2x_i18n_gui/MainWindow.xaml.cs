@@ -455,7 +455,7 @@ namespace waifu2x_i18n_gui
                 if (checkDandD.IsChecked == false)
                 { this.txtSrcPath.Text = fn[0];}
                 
-                if (checkDandD.IsChecked == true) if (DandD_Mode == false)
+                if (checkDandD.IsChecked == true) if (this.btnRun.IsEnabled == true)
                 {
                     this.btnRun.IsEnabled = false;
                     DandD_Mode = true;
@@ -655,7 +655,7 @@ namespace waifu2x_i18n_gui
             pHandle.Close();
             Dispatcher.BeginInvoke(new Action(delegate
             {
-                if (this.btnRun.IsEnabled == false) if (checkSoundBeep.IsChecked == true)
+                if (checkSoundBeep.IsChecked == true) if (this.btnRun.IsEnabled == false)
                 { System.Media.SystemSounds.Beep.Play(); }
                 
                 this.btnAbort.IsEnabled = false;
