@@ -1256,6 +1256,7 @@ namespace waifu2x_i18n_gui
                  "   set scale_ratio=1\r\n" +
                  "   call :scale_ratio_set\r\n" +
                  ")\r\n" +
+                 "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" if \"%image_width%%image_height%\"==\"\" goto waifu2x_run_skip\r\n" +
                  "if \"" + param_mode.ToString() + "\"==\"auto_scale\" (\r\n" +
                  "   if /i \"%Image_ext%\"==\".jpg\" set jpg=1\r\n" +
                  "   if /i \"%Image_ext%\"==\".jpeg\" set jpg=1\r\n" +
@@ -1319,12 +1320,12 @@ namespace waifu2x_i18n_gui
                  "exit /b\r\n" +
                  "\"\r\n" +
                  ":scale_ratio_set\r\n" +
+                 "if \"%image_width%%image_height%\"==\"\" exit /b\r\n" +
                  "if not \"%keep_aspect_ratio%\"==\"1\" (\r\n" +
                  "   call :scale_ratio_set_width\r\n" +
                  "   call :scale_ratio_set_height\r\n" +
                  "   exit /b\r\n" +
                  ")\r\n" +
-                 "if \"%image_width%%image_height%\"==\"\" exit /b\r\n" +
                  "set /a image_height_nx=%image_height%*%scale_ratio%\r\n" +
                  "set /a image_width_nx=%image_width%*%scale_ratio%\r\n" +
                  "if %output_height% LEQ %image_height_nx% exit /b\r\n" +
@@ -1446,6 +1447,7 @@ namespace waifu2x_i18n_gui
                  "   set scale_ratio=1\r\n" +
                  "   call :scale_ratio_set\r\n" +
                  ")\r\n" +
+                 "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" if \"%image_width%%image_height%\"==\"\" goto waifu2x_run_skip\r\n" +
                  "if \"" + param_mode.ToString() + "\"==\"auto_scale\" (\r\n" +
                  "   if /i \"%Image_ext%\"==\".jpg\" set jpg=1\r\n" +
                  "   if /i \"%Image_ext%\"==\".jpeg\" set jpg=1\r\n" +
@@ -1509,12 +1511,12 @@ namespace waifu2x_i18n_gui
                         "exit /b\r\n" +
                         "\r\n" +
                         ":scale_ratio_set\r\n" +
+                        "if \"%image_width%%image_height%\"==\"\" exit /b\r\n" +
                         "if not \"%keep_aspect_ratio%\"==\"1\" (\r\n" +
                         "   call :scale_ratio_set_width\r\n" +
                         "   call :scale_ratio_set_height\r\n" +
                         "   exit /b\r\n" +
                         ")\r\n" +
-                        "if \"%image_width%%image_height%\"==\"\" exit /b\r\n" +
                         "set /a image_height_nx=%image_height%*%scale_ratio%\r\n" +
                         "set /a image_width_nx=%image_width%*%scale_ratio%\r\n" +
                         "if %output_height% LEQ %image_height_nx% exit /b\r\n" +
@@ -1645,6 +1647,7 @@ namespace waifu2x_i18n_gui
                  "   set scale_ratio=1\r\n" +
                  "   call :scale_ratio_set\r\n" +
                  ")\r\n" +
+                 "if not \"" + param_mode.ToString() + "\"==\"noise\" if not \"%output_width%%output_height%\"==\"\" if \"%image_width%%image_height%\"==\"\" goto waifu2x_run_skip\r\n" +
                  "if \"" + param_mode.ToString() + "\"==\"auto_scale\" (\r\n" +
                  "   if /i \"%Image_ext%\"==\".jpg\" set jpg=1\r\n" +
                  "   if /i \"%Image_ext%\"==\".jpeg\" set jpg=1\r\n" +
@@ -1708,12 +1711,12 @@ namespace waifu2x_i18n_gui
                  "exit /b\r\n" +
                  "\r\n" +
                  ":scale_ratio_set\r\n" +
+                 "if \"%image_width%%image_height%\"==\"\" exit /b\r\n" +
                  "if not \"%keep_aspect_ratio%\"==\"1\" (\r\n" +
                  "   call :scale_ratio_set_width\r\n" +
                  "   call :scale_ratio_set_height\r\n" +
                  "   exit /b\r\n" +
                  ")\r\n" +
-                 "if \"%image_width%%image_height%\"==\"\" exit /b\r\n" +
                  "set /a image_height_nx=%image_height%*%scale_ratio%\r\n" +
                  "set /a image_width_nx=%image_width%*%scale_ratio%\r\n" +
                  "if %output_height% LEQ %image_height_nx% exit /b\r\n" +
