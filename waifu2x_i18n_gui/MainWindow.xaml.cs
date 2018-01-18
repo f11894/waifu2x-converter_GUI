@@ -204,7 +204,7 @@ namespace waifu2x_i18n_gui
 
         public static StringBuilder console_buffer = new StringBuilder();
         public static StringBuilder waifu2x_bat = new StringBuilder("");
-        public static bool flagAbort = false;
+        // public static bool flagAbort = false;
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
@@ -379,7 +379,7 @@ namespace waifu2x_i18n_gui
             string msg =
                 "Multilingual GUI for waifu2x-converter\n" +
                 "nanashi (2018)\n" +
-                "Version 1.5.9\n" +
+                "Version 1.6\n" +
                 "BuildDate: 15 Jan,2018\n" +
                 "License: Do What the Fuck You Want License";
             MessageBox.Show(msg);
@@ -636,19 +636,16 @@ namespace waifu2x_i18n_gui
         
         private void OnProcessExit(object sender, EventArgs e)
         {
-            if (!flagAbort)
+            try
             {
-                try
-                {
-                    pHandle.CancelOutputRead();
-                }
-                catch (Exception)
-                {
-                    //No need to throw
-                    //throw;
-                }
-                
+                pHandle.CancelOutputRead();
             }
+            catch (Exception)
+            {
+                //No need to throw
+                //throw;
+            }
+
             
             pHandle.Close();
             Dispatcher.BeginInvoke(new Action(delegate
@@ -661,29 +658,34 @@ namespace waifu2x_i18n_gui
                 //this.CLIOutput.Text = console_buffer.ToString();
 
             }), System.Windows.Threading.DispatcherPriority.ApplicationIdle, null);
-            flagAbort = false;
+            // flagAbort = false;
             DandD_Mode = false;
         }
 
         private void OnAbort(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                pHandle.CancelOutputRead();
+            }
+            catch (Exception) { /*Nothing*/ }
+
             if (!pHandle.HasExited)
             {
                 try
                 {
-                    pHandle.CancelOutputRead();
+                    KillProcessTree(pHandle);
                 }
                 catch (Exception) { /*Nothing*/ }
-                KillProcessTree(pHandle);
 
-                    if (waifu2x_bat.ToString() != "")
+                if (waifu2x_bat.ToString() != "")
                     {
                         if (File.Exists(waifu2x_bat.ToString()))
                         { System.IO.File.Delete(@waifu2x_bat.ToString()); }
                     }
 
 
-                flagAbort = true;
+                // flagAbort = true;
                 this.CLIOutput.Clear();
             }
         }
