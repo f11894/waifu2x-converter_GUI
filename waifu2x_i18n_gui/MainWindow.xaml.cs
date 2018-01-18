@@ -205,6 +205,7 @@ namespace waifu2x_i18n_gui
         public static StringBuilder console_buffer = new StringBuilder();
         public static StringBuilder waifu2x_bat = new StringBuilder("");
         // public static bool flagAbort = false;
+        public static bool queueFlag = false;
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
@@ -609,10 +610,14 @@ namespace waifu2x_i18n_gui
         {
             if (!String.IsNullOrEmpty(e.Data))
             {
+
                 console_buffer.Append(e.Data);
                 console_buffer.Append(Environment.NewLine);
+                if (queueFlag) return;
+                queueFlag = true;
                 Dispatcher.BeginInvoke(new Action(delegate
                 {
+                    queueFlag = false;
                     this.CLIOutput.Clear();
                     this.CLIOutput.AppendText(e.Data);
                     this.CLIOutput.AppendText(Environment.NewLine);
