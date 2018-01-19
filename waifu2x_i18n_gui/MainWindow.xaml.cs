@@ -1270,7 +1270,10 @@ namespace waifu2x_i18n_gui
                  // アルファチャンネルが無い場合は普通に拡大
                  "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
                  // 元のファイル名がユニコードでも処理出来るようにテンポフォルダに別名でコピーする
-                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" (\r\n" +
+                 "   copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\"\r\n" +
+                 "   " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 ")\r\n" +
                  "if not \"%image_alpha%\"==\"true\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
                  "   convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" %resize_argument% " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL\r\n" +
                  "   move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
@@ -1461,7 +1464,10 @@ namespace waifu2x_i18n_gui
                  // アルファチャンネルが無い場合は普通に拡大
                  "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
                  // 元のファイル名がユニコードでも処理出来るようにテンポフォルダに別名でコピーする
-                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" (\r\n" +
+                 "   copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\"\r\n" +
+                 "   " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 ") >nul\r\n" +
                  "if not \"%image_alpha%\"==\"true\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
                  "   convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" %resize_argument% " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL\r\n" +
                  "   move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
@@ -1661,7 +1667,10 @@ namespace waifu2x_i18n_gui
                  // アルファチャンネルが無い場合は普通に拡大
                  "if not \"%image_alpha%\"==\"true\" " + waifu2xbinary.ToString() + " " + "-i" + " " + "%Image_path%" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
                  // 元のファイル名がユニコードでも処理出来るようにテンポフォルダに別名でコピーする
-                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\" >nul&& " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" >nul\r\n" +
+                 "if not \"%image_alpha%\"==\"true\" if not \"%ERRORLEVEL%\"==\"0\" (\r\n" +
+                 "   copy /Y %Image_path% \"%Temporary_dir%%Temporary_Name%%Image_ext%\"\r\n" +
+                 "   " + waifu2xbinary.ToString() + " " + "-i" + " " + "\"%Temporary_dir%%Temporary_Name%%Image_ext%\"" + " " + "-m %mode%" + " " + param_mag.ToString() + " " + param_model.ToString() + " " + param_block.ToString() + " " + param_device.ToString() + " " + param_CPUthread.ToString() + " " + "-o \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\"\r\n" +
+                 ") >nul\r\n" +
                  "if not \"%image_alpha%\"==\"true\" if not \"%output_width%%output_height%\"==\"\" (\r\n" +
                  "   convert.exe \"%Temporary_dir%%Temporary_Name%_BefConvExt.png\" %resize_argument% " + param_outquality.ToString() + " \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" >NUL\r\n" +
                  "   move /Y \"%Temporary_dir%%Temporary_Name%_penultimate" + param_outformat.ToString() + "\" \"%Output_dir%%OUTPUT_Name%\" >NUL\r\n" +
