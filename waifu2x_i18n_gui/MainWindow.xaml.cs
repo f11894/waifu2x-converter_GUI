@@ -626,7 +626,7 @@ namespace waifu2x_i18n_gui
             
         }
 
-        private async void KillProcessTree(System.Diagnostics.Process process)
+        private void KillProcessTree(System.Diagnostics.Process process)
         {
           string taskkill = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "taskkill.exe");
           using (var procKiller = new System.Diagnostics.Process()) {
@@ -635,7 +635,7 @@ namespace waifu2x_i18n_gui
             procKiller.StartInfo.CreateNoWindow = true;
             procKiller.StartInfo.UseShellExecute = false;
             procKiller.Start();
-                await Task.Run(() => procKiller.WaitForExit());
+            procKiller.WaitForExit();
           }
         }
         
@@ -669,7 +669,6 @@ namespace waifu2x_i18n_gui
 
         private void OnAbort(object sender, RoutedEventArgs e)
         {
-            this.btnAbort.IsEnabled = false;
             try
             {
                 pHandle.CancelOutputRead();
