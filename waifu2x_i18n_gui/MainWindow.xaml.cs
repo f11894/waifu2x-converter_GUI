@@ -381,7 +381,7 @@ namespace waifu2x_i18n_gui
                 "Multilingual GUI for waifu2x-converter\n" +
                 "nanashi (2018)\n" +
                 "Version 1.6\n" +
-                "BuildDate: 15 Jan,2018\n" +
+                "BuildDate: 21 Jan,2018\n" +
                 "License: Do What the Fuck You Want License";
             MessageBox.Show(msg);
         }
@@ -667,8 +667,9 @@ namespace waifu2x_i18n_gui
             DandD_Mode = false;
         }
 
-        private void OnAbort(object sender, RoutedEventArgs e)
+        private async void OnAbort(object sender, RoutedEventArgs e)
         {
+            this.btnAbort.IsEnabled = false;
             try
             {
                 pHandle.CancelOutputRead();
@@ -679,7 +680,7 @@ namespace waifu2x_i18n_gui
             {
                 try
                 {
-                    KillProcessTree(pHandle);
+                    await Task.Run(() => KillProcessTree(pHandle));
                 }
                 catch (Exception) { /*Nothing*/ }
 
