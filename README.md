@@ -1,5 +1,5 @@
 # waifu2x-converter_multilang_gui
-![-1](https://user-images.githubusercontent.com/16046279/34793798-edf0a9a8-f68f-11e7-8973-3cbd3f1dcf53.png)
+![-1](https://user-images.githubusercontent.com/16046279/35208386-8999b7ce-ff8b-11e7-86fa-7e26486416b1.png)
 
 Multilingual GUI for waifu2x-converter(https://github.com/tanakamura/waifu2x-converter-cpp). Localization can be done via user-editable xaml file
 
