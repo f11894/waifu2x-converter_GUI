@@ -29,6 +29,7 @@ namespace waifu2x_i18n_gui
         public MainWindow()
         {
             InitializeComponent();
+            System.Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
             var dirInfo = new DirectoryInfo(App.directory);
             var langlist = dirInfo.GetFiles("UILang.*.xaml");
             string[] langcodelist = new string[langlist.Length];
