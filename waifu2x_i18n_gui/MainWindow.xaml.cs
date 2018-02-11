@@ -381,8 +381,8 @@ namespace waifu2x_i18n_gui
             string msg =
                 "Multilingual GUI for waifu2x-converter\n" +
                 "nanashi (2018)\n" +
-                "Version 1.6\n" +
-                "BuildDate: 21 Jan,2018\n" +
+                "Version 1.6.1\n" +
+                "BuildDate: 11 Feb,2018\n" +
                 "License: Do What the Fuck You Want License";
             MessageBox.Show(msg);
         }
@@ -697,7 +697,7 @@ namespace waifu2x_i18n_gui
             }
         }
         
-        public static void Errormessage(string x)
+        public void Errormessage(string x)
         { 
           if (DandD_Mode == true)
           {
@@ -706,6 +706,8 @@ namespace waifu2x_i18n_gui
           }
           System.Media.SystemSounds.Beep.Play();
           MessageBox.Show(@x);
+          btnAbort.IsEnabled = false;
+          btnRun.IsEnabled = true;
           return; 
         }
 
@@ -906,7 +908,7 @@ namespace waifu2x_i18n_gui
             // 入力拡張子の指定書式が正しいかチェックする
             if (!System.Text.RegularExpressions.Regex.IsMatch(
                 txtExt.Text,
-                @"^*\.\w{2,4}( \.\w{2,4})*$",
+                @"^\*\.\w{2,4}( \*\.\w{2,4})*$",
                 System.Text.RegularExpressions.RegexOptions.ECMAScript))
             {
                 // 機械翻訳で出した文なので通じるのか不安
